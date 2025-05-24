@@ -2,20 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.login-container {
+  @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-black p-4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.login-box {
+  @apply bg-gradient-to-t from-black/60 to-black/40 backdrop-blur-lg rounded-2xl p-10 w-full max-w-[420px] shadow-2xl border-indigo-500/20
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.login-title {
+  @apply bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent text-4xl font-bold text-center mb-2;
+}
+
+.login-subtitle {
+  @apply text-gray-400 text-center mb-8 text-xl;
+}
+
+.login-form {
+  @apply flex flex-col gap-6
+}
+
+.form-group {
+  @apply flex flex-col gap-2
+}
+
+.form-label {
+  @apply text-indigo-200 text-sm font-medium;
+}
+
+.form-input{
+  @apply bg-gradient-to-r from-black/40 to-black/30 text-gray-100 rounded-md p-2 border border-indigo-500/30 focus:border-indigo-400/50 focus:ring-2 focus:ring-indigo-500/20
+}
+
+.login-button {
+  @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-md p-2 text-center font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-gradient-to-l hover:from-indigo-500/80 hover:to-purple-500/80 active:from-indigo-700/80 active:to-purple-700/80;
 }
