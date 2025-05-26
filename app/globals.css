@@ -7,7 +7,7 @@
 }
 
 .login-box {
-  @apply bg-gradient-to-t from-black/60 to-black/40 backdrop-blur-lg rounded-2xl p-10 w-full max-w-[420px] shadow-2xl border-indigo-500/20
+  @apply bg-gradient-to-t from-black/60 to-black/40 backdrop-blur-lg rounded-2xl p-10 w-full max-w-[420px] shadow-2xl border-indigo-500/20;
 }
 
 .login-title {
@@ -19,21 +19,62 @@
 }
 
 .login-form {
-  @apply flex flex-col gap-6
+  @apply flex flex-col gap-6;
 }
 
 .form-group {
-  @apply flex flex-col gap-2
+  @apply flex flex-col gap-2;
 }
 
 .form-label {
   @apply text-indigo-200 text-sm font-medium;
 }
 
-.form-input{
-  @apply bg-gradient-to-r from-black/40 to-black/30 text-gray-100 rounded-md p-2 border border-indigo-500/30 focus:border-indigo-400/50 focus:ring-2 focus:ring-indigo-500/20
+.form-input {
+  @apply text-black rounded-md p-2 border border-indigo-500/30 focus:border-indigo-400/50 focus:ring-2 focus:ring-indigo-500/20;
 }
 
 .login-button {
   @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-md p-2 text-center font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-gradient-to-l hover:from-indigo-500/80 hover:to-purple-500/80 active:from-indigo-700/80 active:to-purple-700/80;
+}
+
+/*side bar */
+.sidebar {
+  @apply h-screen w-72 bg-gradient-to-b from-purple-900 via-blue-600 to-black text-white p-6 shadow-2xl;
+}
+
+.sidebar-container {
+  @apply flex flex-col gap-4;
+}
+
+.sidebar-title {
+  @apply text-2xl font-bold mb-6 text-center border border-b-2 border-b-gray-400 border-t-0 border-l-0 border-r-0;
+}
+
+.sidebar-title h1 {
+  @apply text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-pink-400;
+}
+
+.sidebar-title .btn-edit {
+  @apply bg-blue-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
+}
+
+.sidebar-title .btn-logout {
+  @apply bg-red-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
+}
+
+.sidebar-nav-list {
+  @apply space-y-3;
+}
+
+.sidebar-nav-link {
+  @apply flex items-center gap-2 cursor-pointer hover:bg-white/30 p-2 rounded-lg;
+}
+
+.sidebar-nav-link-active {
+  @apply flex items-center gap-2 cursor-pointer bg-white/30 p-2 rounded-lg transition-colors;
+}
+
+.button {
+  @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg py-2 px-4;
 }
