@@ -10,7 +10,7 @@ export default function EditProfile() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confimPassword, setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const router = useRouter();
 
     useEffect(() => {
@@ -45,7 +45,7 @@ export default function EditProfile() {
         e.preventDefault();
 
         try {
-            if (password !== confimPassword) {
+            if (password !== confirmPassword) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -55,7 +55,7 @@ export default function EditProfile() {
             }
 
             const token = localStorage.getItem(Config.tokenKey);
-            const url = `${Config.apiUrl}/api/users/admin-edit-profile`;
+            const url = `${Config.apiUrl}/api/users/edit-profile`;
             const payload = {
                 username,
                 email,
@@ -120,7 +120,7 @@ export default function EditProfile() {
                     <label className="form-label">Confirm Password</label>
                     <input
                         type="password"
-                        value={confimPassword}
+                        value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="form-input"
                     />

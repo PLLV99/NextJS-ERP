@@ -1,80 +1,262 @@
+/* Tailwind base, components, and utilities imports */
+/* เรียกใช้งาน base, components, utilities ของ Tailwind */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ---------- Login Styles ---------- */
+/* กล่อง login หลัก จัดกึ่งกลางแนวตั้ง-นอน พื้นหลังไล่สี */
+/* Main login container: center content, gradient background */
 .login-container {
   @apply min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-900 via-blue-900 to-black p-4;
 }
 
+/* กล่อง login ด้านใน มีเงา ขอบมน พื้นหลังโปร่งใส */
+/* Login box: rounded, blurred, semi-transparent, shadow */
 .login-box {
   @apply bg-gradient-to-t from-black/60 to-black/40 backdrop-blur-lg rounded-2xl p-10 w-full max-w-[420px] shadow-2xl border-indigo-500/20;
 }
 
+/* หัวข้อใหญ่ login ตัวหนา ไล่สี */
+/* Login title: bold, gradient text */
 .login-title {
   @apply bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent text-4xl font-bold text-center mb-2;
 }
 
+/* หัวข้อย่อย login สีเทา */
+/* Login subtitle: gray, centered */
 .login-subtitle {
   @apply text-gray-400 text-center mb-8 text-xl;
 }
 
+/* ฟอร์ม login จัดเรียงแนวตั้ง มีช่องว่างระหว่างกัน */
+/* Login form: vertical layout, spacing */
 .login-form {
   @apply flex flex-col gap-6;
 }
 
+/* กลุ่มฟอร์มแต่ละช่อง */
+/* Form group: vertical, spacing */
 .form-group {
   @apply flex flex-col gap-2;
 }
 
+/* label ของ input ในฟอร์ม */
+/* Form label: indigo, small, medium weight */
 .form-label {
   @apply text-indigo-200 text-sm font-medium;
 }
 
+/* input ในฟอร์ม login */
+/* Form input: rounded, border, focus effect */
 .form-input {
   @apply text-black rounded-md p-2 border border-indigo-500/30 focus:border-indigo-400/50 focus:ring-2 focus:ring-indigo-500/20;
 }
 
+/* ปุ่ม login หลัก */
+/* Main login button: gradient, rounded, hover/active effects */
 .login-button {
   @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-md p-2 text-center font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-gradient-to-l hover:from-indigo-500/80 hover:to-purple-500/80 active:from-indigo-700/80 active:to-purple-700/80;
 }
 
-/*side bar */
+/* ---------- Sidebar Styles ---------- */
+/* แถบเมนูด้านข้าง */
+/* Sidebar: full height, gradient, shadow */
 .sidebar {
   @apply h-screen w-72 bg-gradient-to-b from-purple-900 via-blue-600 to-black text-white p-6 shadow-2xl;
 }
 
+/* กล่องรวมเนื้อหาใน sidebar */
+/* Sidebar container: vertical, spacing */
 .sidebar-container {
   @apply flex flex-col gap-4;
 }
 
+/* หัวข้อ sidebar */
+/* Sidebar title: bold, border bottom */
 .sidebar-title {
   @apply text-2xl font-bold mb-6 text-center border border-b-2 border-b-gray-400 border-t-0 border-l-0 border-r-0;
 }
 
+/* หัวข้อ sidebar ไล่สี */
+/* Sidebar title gradient text */
 .sidebar-title h1 {
   @apply text-2xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-t from-purple-300 to-pink-400;
 }
 
+/* ปุ่มแก้ไขโปรไฟล์ใน sidebar */
+/* Sidebar edit button */
 .sidebar-title .btn-edit {
   @apply bg-blue-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
 }
 
+/* ปุ่ม logout ใน sidebar */
+/* Sidebar logout button */
 .sidebar-title .btn-logout {
   @apply bg-red-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
 }
 
+/* รายการเมนูใน sidebar */
+/* Sidebar nav list: vertical spacing */
 .sidebar-nav-list {
   @apply space-y-3;
 }
 
+/* ลิงก์เมนู sidebar */
+/* Sidebar nav link: hover effect */
 .sidebar-nav-link {
   @apply flex items-center gap-2 cursor-pointer hover:bg-white/30 p-2 rounded-lg;
 }
 
+/* ลิงก์เมนูที่ active */
+/* Sidebar active nav link */
 .sidebar-nav-link-active {
   @apply flex items-center gap-2 cursor-pointer bg-white/30 p-2 rounded-lg transition-colors;
 }
 
+/* ปุ่มทั่วไป */
+/* General button: gradient, rounded */
 .button {
   @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg py-2 px-4;
+}
+
+/* ---------- Table Styles ---------- */
+/* ปุ่มเพิ่มข้อมูล */
+/* Add button: green, rounded */
+.button-add {
+  @apply bg-green-600/80 text-white px-4 py-2 rounded-md text-base font-medium;
+}
+
+/* ตาราง */
+/* Table: full width */
+.table {
+  @apply w-full;
+}
+
+/* กล่องตาราง มีเงา ขอบมน */
+/* Table container: shadow, rounded, scrollable */
+.table-container {
+  @apply w-full overflow-x-auto shadow-lg rounded-lg;
+}
+
+/* หัวตาราง */
+/* Table header: gradient background */
+.table thead {
+  @apply bg-gradient-to-r from-indigo-600 to-purple-600;
+}
+
+/* หัวคอลัมน์ */
+/* Table header cell: white, bold */
+.table th {
+  @apply text-left text-white px-6 py-4 text-sm font-semibold tracking-wider;
+}
+
+/* แถวข้อมูล */
+/* Table row: border, hover effect */
+.table tbody tr {
+  @apply border-b border-gray-200 hover:bg-gray-50 transition-colors;
+}
+
+/* เซลล์ข้อมูล */
+/* Table cell: padding, gray text, white bg */
+.table td {
+  @apply px-6 py-4 text-sm text-gray-700 whitespace-nowrap bg-white;
+}
+
+/* ปุ่ม action ในตาราง */
+/* Table action button: small, rounded */
+.table-action-btn {
+  @apply px-3 py-1 rounded-md text-xs font-medium;
+}
+
+/* ปุ่มแก้ไขในตาราง */
+/* Table edit button: blue gradient, hover effect */
+.table-edit-btn {
+  @apply bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-md
+    hover:from-blue-600 hover:to-blue-700;
+}
+
+/* ปุ่มลบในตาราง */
+/* Table delete button: red gradient, hover effect */
+.table-delete-btn {
+  @apply bg-gradient-to-r from-red-500 to-red-600 text-white rounded-md
+    hover:from-red-600 hover:to-red-700;
+}
+
+/* ---------- Modal Styles ---------- */
+/* กล่อง modal (popup) */
+/* Modal overlay: center, blur, dark background */
+.modal {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  -webkit-backdrop-filter: blur(8px);  /* Safari */
+  backdrop-filter: blur(8px); /* Modern browsers */
+  @apply bg-black/30;
+}
+
+/* กล่องเนื้อหา modal */
+/* Modal container: rounded, shadow, blurred */
+.modal-container {
+  @apply w-full bg-gray-900/90 rounded-xl shadow-2xl border border-gray-700/50 backdrop-blur-sm ring-1 ring-white/10;
+}
+
+/* ส่วนหัว modal */
+/* Modal header: flex, border bottom */
+.modal-header {
+  @apply flex items-center justify-between p-4 border-b;
+}
+
+/* ชื่อหัวข้อ modal */
+/* Modal title: gray, bold */
+.modal-title {
+  @apply text-lg font-semibold text-gray-400;
+}
+
+/* ปุ่มปิด modal */
+/* Modal close button: gray, hover effect */
+.modal-close {
+  @apply text-gray-400 hover:text-gray-600 transition-colors;
+}
+
+/* เนื้อหา modal */
+/* Modal body: padding */
+.modal-body {
+  @apply p-4;
+}
+
+/* label ใน modal */
+/* Modal body label: gray, small */
+.modal-body label {
+  @apply block mb-2 text-sm font-medium text-gray-400;
+}
+
+/* input และ select ใน modal */
+/* Modal body input/select: rounded, gray bg */
+.modal-body input, select {
+  @apply w-full bg-gray-800/50 border border-gray-700/50 rounded-md p-2 text-gray-200;
+}
+
+/* ส่วนท้าย modal */
+/* Modal footer: right align, spacing */
+.modal-footer {
+  @apply flex justify-end gap-2 p-4 border-t;
+}
+
+/* ปุ่มใน modal */
+/* Modal button: rounded, transition */
+.modal-btn {
+  @apply px-4 py-2 rounded-md font-medium transition-colors;
+}
+
+/* ปุ่มยกเลิกใน modal */
+/* Modal cancel button: gray gradient, border, shadow */
+.modal-btn-cancel {
+  @apply bg-gradient-to-b from-red-700 to-red-900 text-gray-300 hover:from-red-800 hover:to-red-950 
+    border border-red-600 shadow-lg shadow-red-500/20 transition-all duration-200 ease-in-out;
+}
+
+/* ปุ่ม submit ใน modal */
+/* Modal submit button: emerald gradient, shadow */
+.modal-btn-submit {
+    @apply bg-gradient-to-b from-emerald-600 to-emerald-800 text-gray-100 hover:from-emerald-700 
+      hover:to-emerald-900 shadow-lg shadow-emerald-500/20 transition-all duration-200 ease-in-out;
 }

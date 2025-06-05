@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Config } from './Config';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -31,6 +31,12 @@ export default function Home() {
       })
     }
   }
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSignIn();
+  }
+
   return (
     <div className="login-container">
       <div className="login-box">
@@ -40,7 +46,7 @@ export default function Home() {
         <h2 className="login-subtitle">
           Enterprise Resource Planning System
         </h2>
-        <form className="login-form">
+        <form className="login-form" onSubmit={handleFormSubmit}>
           <div className="form-group">
             <label className="form-label">
               <i className="fas fa-user mr-2"></i>
@@ -61,7 +67,7 @@ export default function Home() {
               value={password}
               onChange={(e) => setPassword(e.target.value)} />
           </div>
-          <button type="button" className="login-button" onClick={handleSignIn}>
+          <button type="submit" className="login-button">
             <i className="fas fa-sign-in-alt mr-2"></i>
             Sign In
           </button> 
