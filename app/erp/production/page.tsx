@@ -5,7 +5,7 @@ import axios from "axios";
 import { Config } from "@/app/Config";
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
-import { ProductionInterface } from "@/app/interface/Productioninterface";
+import { ProductionInterface } from "@/app/interface/ProductionInterface";
 import Link from 'next/link';
 
 // This is a React functional component used for managing production data.
@@ -201,7 +201,7 @@ export default function Production() {
                 <td>{production.detail}</td>
                 <td className="flex gap-2">
                   {/* Link to the production formula page */}
-                  <Link href={`/erp/formular/${production.id}`} className="button">
+                  <Link href={`/erp/formula/${production.id}`} className="button">
                     <i className="fas fa-file-alt mr-2"></i>
                     Formula
                   </Link>
