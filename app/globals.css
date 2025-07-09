@@ -59,6 +59,12 @@
   @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-md p-2 text-center font-semibold cursor-pointer transition duration-200 ease-in-out hover:bg-gradient-to-l hover:from-indigo-500/80 hover:to-purple-500/80 active:from-indigo-700/80 active:to-purple-700/80;
 }
 
+/* ปุ่ม Back ทั่วระบบ */
+/* Back button: gray gradient, rounded, subtle shadow, hover effect */
+.button-back {
+  @apply bg-gradient-to-b from-gray-200 to-gray-400 text-gray-800 rounded-md p-2 text-sm font-medium flex items-center shadow hover:from-gray-300 hover:to-gray-500 transition-colors duration-150;
+}
+
 /* ---------- Sidebar Styles ---------- */
 /* แถบเมนูด้านข้าง */
 /* Sidebar: full height, gradient, shadow */
@@ -188,7 +194,7 @@
 /* Modal overlay: center, blur, dark background */
 .modal {
   @apply fixed inset-0 z-50 flex items-center justify-center;
-  -webkit-backdrop-filter: blur(8px);  /* Safari */
+  -webkit-backdrop-filter: blur(8px); /* Safari */
   backdrop-filter: blur(8px); /* Modern browsers */
   @apply bg-black/30;
 }
@@ -231,7 +237,8 @@
 
 /* input และ select ใน modal */
 /* Modal body input/select: rounded, gray bg */
-.modal-body input, select {
+.modal-body input,
+select {
   @apply w-full bg-gray-800/50 border border-gray-700/50 rounded-md p-2 text-gray-200;
 }
 
@@ -257,6 +264,6 @@
 /* ปุ่ม submit ใน modal */
 /* Modal submit button: emerald gradient, shadow */
 .modal-btn-submit {
-    @apply bg-gradient-to-b from-emerald-600 to-emerald-800 text-gray-100 hover:from-emerald-700 
+  @apply bg-gradient-to-b from-emerald-600 to-emerald-800 text-gray-100 hover:from-emerald-700 
       hover:to-emerald-900 shadow-lg shadow-emerald-500/20 transition-all duration-200 ease-in-out;
 }
