@@ -19,9 +19,15 @@ export default function InventoryPage() {
     const [productions, setProductions] = useState<ProductionInterface[]>([]);
     const [productionId, setProductionId] = useState<number>(0);
 
+    // Modal import to stock
+    const [showModalImport, setShowModalImport] = useState(false);
+    const [totalProductionLog, setTotalProductionLog] = useState<number>(0);
+    const [totalProductionLoss, setTotalProductionLoss] = useState<number>(0);
+    const [totalProductionFree, setTotalProductionFree] = useState<number>(0);
 
     useEffect(() => {
         fetchStores();
+        fetchProductions();
     }, [])
 
     const fetchStores = async () => {
@@ -36,6 +42,24 @@ export default function InventoryPage() {
                 icon: 'error',
                 title: 'Error',
                 text: error.message || 'Failed to fetch stores'
+            })
+
+        }
+    }
+
+    const fetchProductions = async () => {
+        const url = Config.apiUrl + '/api/productions';
+        try {
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                setStores(response.data);
+                changeProduction(response.data[0].id); // Set default production
+            }
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to fetch productions'
             })
 
         }
@@ -119,6 +143,33 @@ export default function InventoryPage() {
         setShowModal(true);
     }
 
+    const openModalImport = () => {
+        setShowModalImport(true);
+    }
+
+    const closeModalImport = () => {
+        setShowModalImport(false);
+    }
+
+    const changeProduction = async (id: number) => {
+        setProductionId(id);
+        const url = Config.apiUrl + '/api/store/data-for-import' + id;
+        try {
+            const response = await axios.get(url);
+            if (response.status === 200) {
+                const data = response.data;
+                setTotalProductionLog(data.totalProductionLog ?? 0); 
+                setTotalProductionLoss(data.totalProductionLoss ?? 0); 
+                setTotalProductionFree(data.totalProductionLog ?? 0 - data.ProductionLoss ?? 0); 
+            }
+        } catch (error: any) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'Failed to fetch production details'
+            });
+        }
+    }
 
     return (
         <div>
@@ -157,13 +208,13 @@ export default function InventoryPage() {
                                                 onClick={() => openModalTransfer(store.name, store.id)}>
                                                 <i className="fa fa-exchange-alt mr-2"></i>
                                                 Transfer
-                                            </button>
+                                            </button> */}
                                             <button onClick={() => openModalImport(store.id)}
                                                 className="table-edit-btn table-action-btn">
                                                 <i className="fa fa-plus mr-2"></i>
                                                 Import
                                             </button>
-                                            <button className="table-edit-btn table-action-btn"
+                                            {/* <button className="table-edit-btn table-action-btn"
                                                 onClick={() => openModalHistory(store.id)}>
                                                 <i className="fa fa-history mr-2"></i>
                                                 Import History
@@ -222,7 +273,7 @@ export default function InventoryPage() {
                     </Modal>
                 )}
 
-                {/* {showModalImport && (
+                {showModalImport && (
                     <Modal title='Import to Inventory' onClose={closeModalImport}>
                         <form onSubmit={(e) => handleImport(e)}>
                             <div className="flex flex-col gap-2">
@@ -282,7 +333,7 @@ export default function InventoryPage() {
                     </Modal>
                 )}
 
-                {showModalHistory && (
+                {/* {showModalHistory && (
                     <Modal title='Import History' onClose={closeModalHistory} size="2xl">
                         <div className="table-container">
                             <table className="table">
@@ -407,7 +458,7 @@ export default function InventoryPage() {
                             </table>
                         </div>
                     </Modal>
-                )} */}
+                )}  */}
             </div>
         </div>
     )
