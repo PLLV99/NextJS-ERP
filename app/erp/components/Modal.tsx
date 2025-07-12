@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react'
 // Define the type of props that Modal accepts
 interface ModalProps {
     id?: string // รหัสประจำ modal (ไม่จำเป็น) / Modal id (optional)
-    size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' // ขนาด modal (เล็ก-ใหญ่) / Modal size (small to extra large)
+    size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' // ขนาด modal (เล็ก-ใหญ่) / Modal size (small to extra large)
     title?: string // ข้อความหัว modal (ไม่จำเป็น) / Modal title (optional)
     children: React.ReactNode // เนื้อหาภายใน modal (ใส่อะไรก็ได้) / Content inside modal (can be anything)
     onClose: () => void // ฟังก์ชันที่เรียกเมื่อปิด modal / Function called when modal closes
@@ -59,7 +59,8 @@ const Modal = ({ id, size = 'md', title, children, onClose }: ModalProps) => {
         md: 'max-w-md',
         lg: 'max-w-lg',
         xl: 'max-w-xl',
-        '2xl': 'max-w-3xl'
+        '2xl': 'max-w-3xl',
+        '3xl': 'max-w-4xl'
     }
 
     // โครงสร้างของ modal

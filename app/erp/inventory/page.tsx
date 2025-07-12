@@ -78,8 +78,10 @@ export default function InventoryPage() {
             const response = await axios.get(url);
 
             if (response.status === 200) {
-                setStores(response.data);
-                changeProduction(response.data[0].id); // Set default production
+                setProductions(response.data);
+                if (response.data.length > 0) {
+                    changeProduction(response.data[0].id);// Set default production
+                }
             }
         } catch (error) {
             Swal.fire({
@@ -93,7 +95,7 @@ export default function InventoryPage() {
 
     const fetchStoreImports = async (id: number) => {
         try {
-            const url = Config.apiUrl + '/api/store/import' + id;
+            const url = `${Config.apiUrl}/api/store/import/${id}`;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -108,6 +110,24 @@ export default function InventoryPage() {
 
             })
 
+        }
+    }
+
+    const fetchDataTransferStore = async () => {
+        try {
+            const url = Config.apiUrl + '/api/transfer-stock';
+            const response = await axios.get(url);
+
+            if (response.status === 200) {
+                setTransferStores(response.data);
+            }
+
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: (error as Error).message
+            })
         }
     }
 
@@ -254,24 +274,10 @@ export default function InventoryPage() {
 
     }
 
-
-    // --- Modal Functions ---
-    const openModal = () => {
-        setShowModal(true);
-    }
-    const openModalImport = (id: number) => {
-        setShowModalImport(true);
-        setId(id);
-    }
-
-    const closeModalImport = () => {
-        setShowModalImport(false);
-    }
-
     const changeProduction = async (id: number) => {
         setProductionId(id);
         try {
-            const url = Config.apiUrl + '/api/store/data-for-import' + id;
+            const url = Config.apiUrl + '/api/store/data-for-import/' + id;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -293,6 +299,96 @@ export default function InventoryPage() {
         }
     }
 
+    const handleTransferStock = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        try {
+            const payload = {
+                fromStore: {
+                    id: fromStoreId
+                },
+                toStore: {
+                    id: toStoreId
+                },
+                production: {
+                    id: productionTransfer
+                },
+                quantity: qtyTransfer,
+                remark: remarkTransfer,
+                createdAt: transferCreatedAt.toISOString()
+            }
+            const url = Config.apiUrl + '/api/transfer-stock'
+            const response = await axios.post(url, payload);
+
+            if (response.status === 200) {
+                closeModalTransfer();
+
+                Swal.fire({
+                    title: 'Success',
+                    text: 'Product transfer completed',
+                    icon: 'success',
+                    timer: 500
+                })
+            }
+
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: (error as Error).message
+            })
+        }
+    }
+
+    const handleDeleteTransfer = async (id: number) => {
+        try {
+            const button = await Swal.fire({
+                title: 'Delete Transfer Record',
+                text: 'Are you sure you want to delete?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it',
+                cancelButtonText: 'Cancel'
+            });
+
+            if (button.isConfirmed) {
+                const url = Config.apiUrl + '/api/transfer-stock/' + id
+                const response = await axios.delete(url);
+                if (response.status === 200) {
+                    fetchDataTransferStore();
+                    Swal.fire({
+                        title: 'Deleted',
+                        text: 'The transfer record has been deleted successfully.',
+                        icon: 'success',
+                        timer: 1000
+                    });
+                }
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'Error',
+                icon: 'error',
+                text: (error as Error).message
+            });
+        }
+    }
+
+
+    // --- Modal Functions ---
+    const openModal = () => {
+        setShowModal(true);
+    }
+    const openModalImport = (id: number) => {
+        setShowModalImport(true);
+        setId(id);
+    }
+
+    const closeModalImport = () => {
+        setShowModalImport(false);
+    }
+
+
+
     const openModalHistory = (id: number) => {
         setShowModalHistory(true);
         setId(id);
@@ -304,22 +400,30 @@ export default function InventoryPage() {
     }
 
 
-    // const openModalTransfer = (fromStoreName: string, fromStoreId: number) => {
-    //     setShowModalTransfer(true);
-    //     setFromStoreName(fromStoreName);
-    //     setFromStoreId(fromStoreId);
-    // }
+    const openModalTransfer = (fromStoreName: string, fromStoreId: number) => {
+        setShowModalTransfer(true);
+        setFromStoreName(fromStoreName);
+        setFromStoreId(fromStoreId);
+    }
 
-    // const closeModalTransfer = () => {
-    //     setShowModalTransfer(false);
-    //     setFromStoreId(0);
-    //     setToStoreId(0);
-    //     setQtyTransfer(0);
-    //     setRemarkTransfer('');
-    //     setTransferCreatedAt(new Date());
-    //     setProductionTransfer(productions[0].id);
-    // }
+    const closeModalTransfer = () => {
+        setShowModalTransfer(false);
+        setFromStoreId(0);
+        setToStoreId(0);
+        setQtyTransfer(0);
+        setRemarkTransfer('');
+        setTransferCreatedAt(new Date());
+        setProductionTransfer(productions[0].id);
+    }
 
+    const openModalHistoryTransfer = () => {
+        setShowModalHistoryTransfer(true);
+        fetchDataTransferStore();
+    }
+
+    const closeModalHistoryTransfer = () => {
+        setShowModalHistoryTransfer(false);
+    }
 
 
     return (
@@ -331,10 +435,10 @@ export default function InventoryPage() {
                         <i className="fa-solid fa-plus me-2"></i>
                         Add Inventory
                     </button>
-                    {/* <button className="button-add" onClick={openModalHistoryTransfer}>
+                    <button className="button-add" onClick={openModalHistoryTransfer}>
                         <i className="fa-solid fa-exchange-alt me-2"></i>
                         Transfer History
-                    </button> */}
+                    </button>
                 </div>
 
                 <div className="table-container mt-3">
@@ -355,11 +459,11 @@ export default function InventoryPage() {
                                     <td>{store.remark}</td>
                                     <td>
                                         <div className="flex gap-1 justify-center">
-                                            {/* <button className="table-edit-btn table-action-btn"
+                                            <button className="table-edit-btn table-action-btn"
                                                 onClick={() => openModalTransfer(store.name, store.id)}>
                                                 <i className="fa fa-exchange-alt mr-2"></i>
                                                 Transfer
-                                            </button> */}
+                                            </button>
                                             <button onClick={() => openModalImport(store.id)}
                                                 className="table-edit-btn table-action-btn">
                                                 <i className="fa fa-plus mr-2"></i>
@@ -518,7 +622,7 @@ export default function InventoryPage() {
                     </Modal>
                 )}
 
-                {/* {showModalTransfer && (
+                {showModalTransfer && (
                     <Modal title='Transfer Product' onClose={closeModalTransfer} size='xl'>
                         <form className="flex flex-col gap-2"
                             onSubmit={(e) => handleTransferStock(e)}>
@@ -609,7 +713,7 @@ export default function InventoryPage() {
                             </table>
                         </div>
                     </Modal>
-                )}   */}
+                )}
             </div>
         </div>
     )
