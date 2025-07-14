@@ -215,7 +215,7 @@ export default function InventoryPage() {
         try {
             const data = {
                 production: {
-                    id: id
+                    id: productionId
                 },
                 store: {
                     id: id
