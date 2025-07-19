@@ -213,7 +213,7 @@ export default function SalePage() {
 
         if (!isNaN(inputMoneyValue)) {
             setInputMoney(inputMoneyValue);
-            setReturnMoney(inputMoneyValue - (total + discount));
+            setReturnMoney(inputMoneyValue - (total - discount));
         }
 
     }
@@ -224,7 +224,7 @@ export default function SalePage() {
 
         if (!isNaN(discountValue)) {
             setDiscount(discountValue);
-            setReturnMoney(inputMoney - (total + discountValue));
+            setReturnMoney(inputMoney - (total - discountValue));
         }
     }
 
@@ -237,7 +237,7 @@ export default function SalePage() {
     //-- Utility
     const getHeaders = () => {
         const headers = {
-            'Authorization': 'Bearer' + localStorage.getItem(Config.tokenKey)
+            'Authorization': 'Bearer ' + localStorage.getItem(Config.tokenKey)
         }
         return headers;
     }
@@ -258,12 +258,14 @@ export default function SalePage() {
                         Search
                     </button>
                 </div>
+
                 <div className="flex justify-end">
                     <button className="button" onClick={openModalEndSale}>
                         <i className="fa-solid fa-check mr-3"></i>
                         Complete Sale
                     </button>
                 </div>
+
                 <div className="table-container">
                     <table className="table">
                         <thead>

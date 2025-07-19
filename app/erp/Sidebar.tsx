@@ -11,6 +11,7 @@ export default function Sidebar() {
     const [username, setUsername] = useState('');
     const router = useRouter();
     const [currentPath, setCurrentPath] = useState('');
+    const [role, setRole] = useState('');
 
     useEffect(() => {
         fetchData();
@@ -32,6 +33,11 @@ export default function Sidebar() {
     const fetchData = async () => {
         try {
             const token = localStorage.getItem(Config.tokenKey);
+
+            if (!token) {
+                //router.push('/');
+                return;
+            }
             const response = await axios.get(`${Config.apiUrl}/api/users/admin-info`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -40,6 +46,7 @@ export default function Sidebar() {
 
             if (response.status === 200) {
                 setUsername(response.data.username);
+                setRole(response.data.role);
             }
         } catch (err) {
             Swal.fire({
@@ -61,6 +68,8 @@ export default function Sidebar() {
             })
 
             if (button.isConfirmed) {
+                // remove cookie
+                document.cookie = `${Config.tokenKey}=; path=/; max-age=0`;
                 localStorage.removeItem(Config.tokenKey);
                 router.push('/');
             }
