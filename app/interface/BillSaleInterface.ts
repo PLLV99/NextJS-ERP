@@ -5,6 +5,7 @@ export interface BillSaleInterface {
   User: UserInterface;
   inputMoney: number;
   discount: number;
+  total: number;
   status: string;
   createdAt: Date;
 }
