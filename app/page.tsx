@@ -21,13 +21,18 @@ export default function Home() {
 
       if (response.status === 200) {
         localStorage.setItem(Config.tokenKey, response.data);
-        router.push('/erp/dashboard');
+
+        if (response.data.role == 'admin') {
+          router.push('/erp/dashboard');
+        } else {
+          router.push('/erp/sale');
+        }
       }
     } catch (err) {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Invalid username or password'
+        text: 'Invalid username or password ' + (err as Error).message
       })
     }
   }
@@ -70,7 +75,7 @@ export default function Home() {
           <button type="submit" className="login-button">
             <i className="fas fa-sign-in-alt mr-2"></i>
             Sign In
-          </button> 
+          </button>
         </form>
       </div>
     </div>
