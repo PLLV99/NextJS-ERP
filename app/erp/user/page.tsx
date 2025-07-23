@@ -27,7 +27,21 @@ export default function Page() {
     // Fetch users from API
     const fetchUsers = async () => {
         try {
-            const response = await axios.get(`${Config.apiUrl}/api/users`); // เรียก API เพื่อดึงข้อมูลผู้ใช้ / Call API to fetch users
+            const token = localStorage.getItem(Config.tokenKey);
+            if (!token) {
+                Swal.fire({
+                    title: 'Authentication Required',
+                    icon: 'warning',
+                    text: 'Please log in to view users'
+                });
+                return;
+            }
+
+            const headers = {
+                'Authorization': `Bearer ${token}`
+            };
+
+            const response = await axios.get(`${Config.apiUrl}/api/users`, { headers }); //  Call API to fetch users
             // If successful (status 200), store users data
 
             if (response.status == 200) {
@@ -59,13 +73,13 @@ export default function Page() {
 
         try {
             const url = editingUser
-                ? `${Config.apiUrl}/api/users/admin-update-profile`
+                ? `${Config.apiUrl}/api/users/admin-update-profile/${editingUser.id}`
                 : `${Config.apiUrl}/api/users/admin-create`
 
 
             const payload = {
                 id: editingUser?.id || null,
-                emial: email,
+                email: email,
                 username: username,
                 password: password || '',
                 role: role
@@ -75,7 +89,9 @@ export default function Page() {
                 'Authorization': 'Bearer ' + localStorage.getItem(Config.tokenKey)
             };
 
-            const response = await axios.put(url, payload, { headers });
+            const response = editingUser
+                ? await axios.put(url, payload, { headers })
+                : await axios.post(url, payload, { headers });
 
             if (response.status === 200) {
                 Swal.fire({
@@ -122,8 +138,7 @@ export default function Page() {
                 // Send delete request to API
                 const response = await axios.delete(url, { headers })
 
-                if (response.status === 200) {
-                    // Show success message
+                if (response.status === 200 || response.status === 204) { // 204 No Content for successful deletion
                     Swal.fire({
                         icon: 'success',
                         title: 'success',
@@ -152,7 +167,6 @@ export default function Page() {
         setUsername(user.username);
         setPassword('');
         setShowModal(true); // Show modal for editing
-        // Close modal if no user selected
         setRole(user.role ?? 'employee');
 
     }
@@ -163,7 +177,7 @@ export default function Page() {
             {/*  Page title */}
             <h1 className="text-2xl font-bold mb-5">User Management</h1>
 
-            {/* ปุ่ Add user button */}
+            {/* Add user button */}
             <div className="flex justify-between items-center mb-6">
                 <button className="button-add"
                     onClick={() => {
@@ -171,6 +185,8 @@ export default function Page() {
                         setEmail('')
                         setUsername('')
                         setPassword('')
+                        setPasswordConfirm('')
+                        setRole('employee')
                         setShowModal(true)
                     }}
                 >
@@ -242,14 +258,18 @@ export default function Page() {
                         <div className="mb-4">
                             <label className="block mb-2">Password</label>
                             <input type="password" className="form-input"
+                                value={password}
                                 onChange={e => setPassword(e.target.value)}
+                                required={!editingUser}
                             />
                         </div>
                         {/*  Confirm Password form */}
                         <div className="mb-4">
                             <label className="block mb-2">Confirm Password</label>
                             <input type="password" className="form-input"
+                                value={passwordConfirm}
                                 onChange={e => setPasswordConfirm(e.target.value)}
+                                required={!editingUser}
                             />
                         </div>
                         {/* Role */}

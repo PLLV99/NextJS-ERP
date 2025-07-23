@@ -166,18 +166,18 @@ export default function BillSalePage() {
                                     <th style={{ textAlign: 'right' }}>Line Total</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                {billSaleDetails.map((item) => (
+                                    <tr key={item.id}>
+                                        <td>{item.production.id}</td>
+                                        <td>{item.production.name}</td>
+                                        <td className="text-right">{item.quantity}</td>
+                                        <td className="text-right">{item.price.toLocaleString()}</td>
+                                        <td className="text-right">{(item.quantity * item.price).toLocaleString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
                         </table>
-                        <tbody>
-                            {billSaleDetails.map((item) => (
-                                <tr key={item.id}>
-                                    <td>{item.production.id}</td>
-                                    <td>{item.production.name}</td>
-                                    <td className="text-right">{item.quantity}</td>
-                                    <td className="text-right">{item.price.toLocaleString()}</td>
-                                    <td className="text-right">{(item.quantity * item.price).toLocaleString()}</td>
-                                </tr>
-                            ))}
-                        </tbody>
                     </div>
                 </Modal>
             )}

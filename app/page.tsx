@@ -5,6 +5,7 @@ import { Config } from './Config';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+
 export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +21,14 @@ export default function Home() {
       const response = await axios.post(url, payload);
 
       if (response.status === 200) {
-        localStorage.setItem(Config.tokenKey, response.data);
+        // เก็บ token ลง cookie (ถ้าต้องการ)
+        document.cookie = Config.tokenKey + '=' + response.data.token;
+
+        // เก็บ token ลง localStorage (สำคัญ!)
+        localStorage.setItem(Config.tokenKey, response.data.token);
+
+        // เก็บ role ลง localStorage ด้วยก็ได้ (ถ้าต้องใช้ใน client)
+        localStorage.setItem('userRole', response.data.role);
 
         if (response.data.role == 'admin') {
           router.push('/erp/dashboard');

@@ -40,7 +40,7 @@ export default function DashboardPage() {
 
     return (
         <div>
-            <div className="text-2xl font-bold mb-2">Dash Board</div>
+            <div className="text-2xl font-bold mb-2">Dashboard</div>
             <div className="flex gap-2 text-end">
                 <div className="flex flex-col gap-2 bg-blue-500 text-white rounded-lg p-2 w-full">
                     <div>Production  Quantity (units)</div>
