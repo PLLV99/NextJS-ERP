@@ -178,7 +178,7 @@ export default function Sidebar() {
                                             <span>Accounting</span>
                                         </a>
                                     </li>
-                                    <li className='sidebar-nav-item'>
+                                    {/* <li className='sidebar-nav-item'>
                                         <a onClick={() => navigateAndSetCurrentPath('/erp/customer')}
                                             className={isActive('/erp/customer')}>
                                             <i className='fas fa-handshake mr-2'></i>
@@ -198,7 +198,7 @@ export default function Sidebar() {
                                             <i className='fas fa-users-cog mr-2'></i>
                                             <span>Human Resources</span>
                                         </a>
-                                    </li>
+                                    </li> */}
                                     <li className='sidebar-nav-item'>
                                         <a onClick={() => navigateAndSetCurrentPath('/erp/report')}
                                             className={isActive('/erp/report')}>
@@ -215,13 +215,13 @@ export default function Sidebar() {
                                     </li>
                                 </>
                             )}
-                            <li className='sidebar-nav-item'>
+                            {/* <li className='sidebar-nav-item'>
                                 <a onClick={() => navigateAndSetCurrentPath('/erp/setting')}
                                     className={isActive('/erp/setting')}>
                                     <i className='fas fa-cogs mr-2'></i>
                                     <span>Settings</span>
                                 </a>
-                            </li>
+                            </li> */}
                         </ul>
                     </nav>
                 </div >

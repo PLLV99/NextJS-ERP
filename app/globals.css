@@ -238,10 +238,14 @@
 /* input และ select ใน modal */
 /* Modal body input/select: rounded, gray bg */
 .modal-body input,
-select {
+.modal-body select {
   @apply w-full bg-gray-800/50 border border-gray-700/50 rounded-md p-2 text-gray-200;
 }
-
+.modal-body select option {
+  color: #e5e7eb; /* This is text-gray-200's hex code */
+  /* Crucially, set a dark background for the options so white text is visible */
+  background-color: #1f2937; /* A dark gray, like bg-gray-800 or similar */
+}
 /* ส่วนท้าย modal */
 /* Modal footer: right align, spacing */
 .modal-footer {
