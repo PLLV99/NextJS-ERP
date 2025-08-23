@@ -1,4 +1,5 @@
 'use client'
+
 import React, { useCallback, useEffect, useState } from "react"
 import Modal from "../components/Modal"
 import { Config } from "@/app/Config";
@@ -290,11 +291,11 @@ export default function InventoryPage() {
                 setTotalProductionLoss(loss);
                 setTotalProductionFree(free);
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: error.message || 'Failed to fetch production details'
+                text: (error as Error).message || 'Failed to fetch production details'
             });
         }
     }
