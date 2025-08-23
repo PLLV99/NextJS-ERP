@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import Modal from "../components/Modal"
 import { Config } from "@/app/Config";
 import Swal from "sweetalert2";
@@ -48,31 +48,25 @@ export default function InventoryPage() {
     const [fromStoreName, setFromStoreName] = useState<string>('');
     const [productionTransfer, setProductionTransfer] = useState<number>(0);
 
-    // ---useEffect ---
-    useEffect(() => {
-        fetchStores();
-        fetchProductions();
-    }, [])
-
     // --- API Functions ---
-    const fetchStores = async () => {
+    const fetchStores = useCallback(async () => {
         const url = Config.apiUrl + '/api/store';
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
                 setStores(response.data);
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: error.message || 'Failed to fetch stores'
+                text: (error as Error).message || 'Failed to fetch stores'
             })
 
         }
-    }
+    }, []);
 
-    const fetchProductions = async () => {
+    const fetchProductions = useCallback(async () => {
         const url = Config.apiUrl + '/api/productions';
         try {
             const response = await axios.get(url);
@@ -91,7 +85,13 @@ export default function InventoryPage() {
             })
 
         }
-    }
+    }, []); // Note: changeProduction is not included here to avoid complexity, but in a larger app, it should be.
+
+    // ---useEffect ---
+    useEffect(() => {
+        fetchStores();
+        fetchProductions();
+    }, [fetchStores, fetchProductions])
 
     const fetchStoreImports = async (id: number) => {
         try {

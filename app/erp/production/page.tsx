@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Config } from "@/app/Config";
 import Swal from "sweetalert2";
@@ -20,13 +20,8 @@ export default function Production() {
   const [name, setName] = useState('');
   const [detail, setDetail] = useState('');
 
-  // useEffect hook runs once when the component mounts.
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   // This function fetches production data from the API.
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       // Get the token from local storage.
       const token = localStorage.getItem(Config.tokenKey);
@@ -41,15 +36,20 @@ export default function Production() {
       if (response.status === 200) {
         setProductions(response.data);
       }
-    } catch (err: any) {
+    } catch (err) {
       // Show an error alert if something goes wrong.
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: err.message
+        text: (err as Error).message
       });
     }
-  };
+  }, []);
+
+  // useEffect hook runs once when the component mounts.
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   // Handler to show the modal for adding a new production item.
   const handleAdd = () => {
@@ -111,7 +111,7 @@ export default function Production() {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Unable to delete data: ' + err
+        text: 'Unable to delete data: ' + (err as Error).message
       });
     }
   };
@@ -161,13 +161,13 @@ export default function Production() {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Error: ' + err
+        text: 'Error: ' + (err as Error).message
       });
     }
   };
 
   return (
-    <div className="container">
+    <div className="container mx-auto p-4">
       {/* Heading for the production management page */}
       <h1 className="text-2xl font-bold mb-5">Manage Production Data</h1>
       <div className="flex mb-6 gap-2">
@@ -177,7 +177,7 @@ export default function Production() {
           Add Product
         </button>
         {/* Link to navigate to the materials page */}
-        <Link href="/erp/material" className="button">
+        <Link href="/erp/material" className="button-info">
           <i className="fas fa-box mr-2"></i>
           Materials
         </Link>
@@ -188,9 +188,9 @@ export default function Production() {
         <table className="table">
           <thead>
             <tr>
-              <th className="w-[200px]">Product Name</th>
+              <th >Product Name</th>
               <th>Description</th>
-              <th className="w-[120px]">Actions</th>
+              <th className="w-auto text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -199,7 +199,7 @@ export default function Production() {
               <tr key={production.id}>
                 <td>{production.name}</td>
                 <td>{production.detail}</td>
-                <td className="flex gap-2">
+                <td className="flex gap-1 justify-center flex-wrap">
                   {/* Link to the production formula page */}
                   <Link href={`/erp/formula/${production.id}`} className="button">
                     <i className="fas fa-file-alt mr-2"></i>
@@ -236,13 +236,13 @@ export default function Production() {
 
       {/* Conditionally render the modal if showModal is true */}
       {showModal && (
-        <Modal id="production-modal" title="Production Data" onClose={() => setShowModal(false)} size="md">
+        <Modal id="production-modal" title={editingProduction ? "Edit Production" : "Add Production"} onClose={() => setShowModal(false)} size="md">
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label className="block mb-2">Product Name</label>
               <input
                 type="text"
-                className="form-input"
+                className="input-field"
                 value={name}
                 onChange={e => setName(e.target.value)}
               />

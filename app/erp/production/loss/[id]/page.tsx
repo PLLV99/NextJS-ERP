@@ -7,7 +7,7 @@ import { ProductionLossInterface } from "@/app/interface/ProductionLossInterface
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Swal from "sweetalert2";
 
 
@@ -22,18 +22,13 @@ export default function ProductionLoss() {
     const { id } = useParams();
     const router = useRouter();
 
-    useEffect(() => {
-        fetchProduction();
-        fetchProductionLoss();
-    }, []);
-
-    const fetchProductionLoss = async () => {
+    const fetchProductionLoss = useCallback(async () => {
         const url = Config.apiUrl + '/api/production-loss/' + id;
 
         try {
             const response = await axios.get(url);
             setProductionLoss(response.data);
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'Error',
                 text: (error as Error).message,
@@ -41,23 +36,28 @@ export default function ProductionLoss() {
             })
 
         }
-    }
+    }, [id]);
 
-    const fetchProduction = async () => {
+    const fetchProduction = useCallback(async () => {
         const url = Config.apiUrl + '/api/productions/' + id;
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
                 setProduction(response.data);
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: error.message
+                text: (error as Error).message
             })
         }
-    }
+    }, [id]);
+
+    useEffect(() => {
+        fetchProduction();
+        fetchProductionLoss();
+    }, [fetchProduction, fetchProductionLoss]);
 
     const openModal = () => {
         setShowModal(true);
@@ -72,7 +72,7 @@ export default function ProductionLoss() {
     }
 
     const handleSave = async () => {
-        let url = Config.apiUrl + '/api/production-loss';
+        const url = Config.apiUrl + '/api/production-loss';
 
         try {
             const payload = {
@@ -100,11 +100,11 @@ export default function ProductionLoss() {
                 fetchProductionLoss();
             }
 
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'error',
                 icon: 'error',
-                text: error.message
+                text: (error as Error).message
             })
         }
     }
@@ -132,10 +132,10 @@ export default function ProductionLoss() {
                     });
                     fetchProductionLoss();
                 }
-            } catch (error: any) {
+            } catch (error) {
                 Swal.fire({
                     title: 'Error',
-                    text: error.message,
+                    text: (error as Error).message,
                     icon: 'error'
                 });
             }
@@ -160,7 +160,7 @@ export default function ProductionLoss() {
                     Back
                 </button>
             </div>
-            <h1>Production Loss: {production?.name}</h1>
+            <h1 className="text-2xl font-bold">Production Loss: {production?.name}</h1>
             <div className="flex flex-col mt-3 gap-3">
                 <div>
                     <button className="button-add" onClick={openModal}>
@@ -180,17 +180,17 @@ export default function ProductionLoss() {
                             </tr>
                         </thead>
                         <tbody>
-                            {productionLoss.map((productionLoss) => (
-                                <tr key={productionLoss.id}>
-                                    <td>{new Date(productionLoss.createdAt).toLocaleDateString()}</td>
-                                    <td className="text-right">{productionLoss.qty}</td>
-                                    <td>{productionLoss.remark}</td>
+                            {productionLoss.map((pl) => (
+                                <tr key={pl.id}>
+                                    <td>{new Date(pl.createdAt).toLocaleDateString()}</td>
+                                    <td className="text-right">{pl.qty}</td>
+                                    <td>{pl.remark}</td>
                                     <td className="flex gap-2 justify-center">
-                                        <button onClick={() => handleEdit(productionLoss)}
+                                        <button onClick={() => handleEdit(pl)}
                                             className="table-edit-btn table-action-btn">
                                             <i className="fa fa-pencil"></i>
                                         </button>
-                                        <button onClick={() => handleDelete(productionLoss.id)}
+                                        <button onClick={() => handleDelete(pl.id)}
                                             className="table-delete-btn table-action-btn">
                                             <i className="fa fa-trash"></i>
                                         </button>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Modal from "../components/Modal";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -21,28 +21,28 @@ export default function MaterialPage() {
     // State for quantity
     const [qty, setQty] = useState<number>(0);
 
-    // Fetch materials when component mounts
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     // Fetch all materials from backend
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/materials'
             const response = await axios.get(url);
 
-            if (response.status == 200) {
+            if (response.status === 200) {
                 setMaterials(response.data);
             }
-        } catch (err: any) {
+        } catch (err) {
             Swal.fire({
                 title: 'Error',
-                text: err,
+                text: (err as Error).message,
                 icon: 'error'
             })
         }
-    }
+    }, []);
+
+    // Fetch materials when component mounts
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
 
     // Save (add or edit) material
     const handleSave = async () => {
@@ -67,7 +67,7 @@ export default function MaterialPage() {
                 status = response.status;
             }
 
-            if (status == 200) {
+            if (status === 200) {
                 fetchData();
                 setShowModal(false);
                 Swal.fire({
@@ -77,11 +77,11 @@ export default function MaterialPage() {
                     timer: 1000
                 })
             }
-        } catch (err: any) {
+        } catch (err) {
             Swal.fire(
                 {
                     title: 'Error',
-                    text: err,
+                    text: (err as Error).message,
                     icon: 'error'
                 })
         }
@@ -115,14 +115,14 @@ export default function MaterialPage() {
             if (confirm.isConfirmed) {
                 const url = Config.apiUrl + '/api/materials/' + id;
                 const response = await axios.delete(url);
-                if (response.status == 200) {
+                if (response.status === 200) {
                     fetchData();
                 }
             }
-        } catch (err: any) {
+        } catch (err) {
             Swal.fire({
                 title: 'Error',
-                text: err,
+                text: (err as Error).message,
                 icon: 'error'
             })
         }
@@ -140,7 +140,7 @@ export default function MaterialPage() {
                 setUnitName('');
                 setQty(0);
                 setId(0);
-            }} className="button">
+            }} className="button-add">
                 <i className="fa fa-plus mr-2"></i>
                 Add Material
             </button>
@@ -184,17 +184,17 @@ export default function MaterialPage() {
                     <div className="flex flex-col gap-2">
                         <div>
                             <label>Material Name</label>
-                            <input type="text" value={name}
+                            <input type="text" value={name} className="input-field"
                                 onChange={(e) => setName(e.target.value)} />
                         </div>
                         <div>
                             <label>Unit</label>
-                            <input type="text" value={unitName}
+                            <input type="text" value={unitName} className="input-field"
                                 onChange={(e) => setUnitName(e.target.value)} />
                         </div>
                         <div>
                             <label>Quantity</label>
-                            <input type="text" value={qty}
+                            <input type="text" value={qty} className="input-field"
                                 onChange={(e) => setQty(Number(e.target.value || 0))} />
                         </div>
                         <div className="flex justify-end gap-2">

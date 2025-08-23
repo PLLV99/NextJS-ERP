@@ -4,7 +4,7 @@ import { ProductionInterface } from "@/app/interface/ProductionInterface"
 import { ProductionLogInterface } from "@/app/interface/ProductionLogInterface";
 import axios from "axios";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
 import Modal from "@/app/erp/components/Modal";
@@ -20,12 +20,7 @@ export default function ProductionLog() {
     const router = useRouter();
     const { id } = useParams();
 
-    useEffect(() => {
-        fecthProduction();
-        fetchProductionLogs();
-    }, [])
-
-    const fetchProductionLogs = async () => {
+    const fetchProductionLogs = useCallback(async () => {
         const url = Config.apiUrl + '/api/production-logs/' + id;
 
         try {
@@ -33,30 +28,35 @@ export default function ProductionLog() {
             if (response.status === 200) {
                 setProductionLogs(response.data)
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'error',
-                text: error.message,
+                text: (error as Error).message,
                 icon: 'error'
             })
         }
-    }
+    }, [id]);
 
-    const fecthProduction = async () => {
+    const fecthProduction = useCallback(async () => {
         const url = Config.apiUrl + '/api/productions/' + id;
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
                 setProduction(response.data)
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'error',
-                text: error.message,
+                text: (error as Error).message,
                 icon: 'error'
             })
         }
-    }
+    }, [id]);
+
+    useEffect(() => {
+        fecthProduction();
+        fetchProductionLogs();
+    }, [fecthProduction, fetchProductionLogs]);
 
     const openModal = () => {
         setShowModal(true);
@@ -98,10 +98,10 @@ export default function ProductionLog() {
                 closeModal();
                 fetchProductionLogs();
             }
-        } catch (error: any) {
+        } catch (error) {
             Swal.fire({
                 title: 'error',
-                text: error.message,
+                text: (error as Error).message,
                 icon: 'error'
             })
 
@@ -132,10 +132,10 @@ export default function ProductionLog() {
                     })
                     fetchProductionLogs();
                 }
-            } catch (error: any) {
+            } catch (error) {
                 Swal.fire({
                     title: 'error',
-                    text: error.message,
+                    text: (error as Error).message,
                     icon: 'error'
                 })
             }
@@ -161,7 +161,7 @@ export default function ProductionLog() {
                     Back
                 </button>
             </div>
-            <h1>Production Log for Product: {production?.name}</h1>
+            <h1 className="text-2xl font-bold">Production Log for Product: {production?.name}</h1>
             <div className="flex flex-col mt-3 gap-3">
                 <div>
                     <button className="button-add" onClick={openModal}>
@@ -207,6 +207,7 @@ export default function ProductionLog() {
                         <div>
                             <label>Date</label>
                             <input type="date"
+                                className="input-field"
                                 value={createdAt.toISOString().split('T')[0]}
                                 onChange={(e) => setCreatedAt(new Date(e.target.value))}
                             />
@@ -214,12 +215,14 @@ export default function ProductionLog() {
                         <div>
                             <label>Quantity</label>
                             <input type="text"
+                                className="input-field"
                                 value={qty}
                                 onChange={(e) => setQty(Number(e.target.value))} />
                         </div>
                         <div>
                             <label>Remark</label>
                             <input type="text"
+                                className="input-field"
                                 value={remark}
                                 onChange={(e) => setRemark(e.target.value)} />
                         </div>
