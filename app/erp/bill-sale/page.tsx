@@ -126,23 +126,23 @@ export default function BillSalePage() {
                                         </div>
                                     )}
                                 </td>
-                                <td>{billSale.id}</td>
-                                <td>{(new Date(billSale.createdAt)).toLocaleDateString()}</td>
-                                <td>{billSale.total.toLocaleString()}</td>
+                                <td>{item.id}</td>
+                                <td>{(new Date(item.createdAt)).toLocaleDateString()}</td>
+                                <td>{item.total.toLocaleString()}</td>
                                 <td>
-                                    <button onClick={() => fetchDataBillSaleDetail(billSale.id)}
+                                    <button onClick={() => fetchDataBillSaleDetail(item.id)}
                                         className="bg-blue-600 px-4 py-2 rounded-md text-white mr-1">
                                         <i className="fa fa-eye mr-2"></i>
                                         View Invoice
                                     </button>
                                     <button
-                                        onClick={() => handleDelete(billSale)}
+                                        onClick={() => handleDelete(item)}
                                         className="bg-red-500 px-4 py-2 rounded-md text-white mr-1">
                                         <i className="fas fa-ban mr-2"></i>
                                         Void
                                     </button>
                                     <button
-                                        onClick={() => handlePaid(billSale)}
+                                        onClick={() => handlePaid(item)}
                                         className="bg-green-600 px-4 py-2 rounded-md text-white">
                                         <i className="fa fa-check mr-2"></i>
                                         Mark as Paid
