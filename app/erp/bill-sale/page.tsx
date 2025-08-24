@@ -1,12 +1,12 @@
 'use client'
 
-import { Config } from "@/app/Config";
-import { BillSaleInterface } from "@/app/interface/BillSaleInterface";
+import { Config } from "@/Config";
+import { BillSaleInterface } from "@/interface/BillSaleInterface";
 import axios from "axios";
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
-import { BillSaleDetailInterface } from "@/app/interface/BillSaleDetailInterface";
+import { BillSaleDetailInterface } from "@/interface/BillSaleDetailInterface";
 
 
 
@@ -15,12 +15,7 @@ export default function BillSalePage() {
     const [billSaleDetails, setBillSaleDetails] = useState<BillSaleDetailInterface[]>([]);
     const [showModal, setShowModal] = useState(false);
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/report/bill-sales';
             const response = await axios.get(url);
@@ -37,7 +32,12 @@ export default function BillSalePage() {
             })
 
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
+
     const fetchDataBillSaleDetail = async (billSaleId: number) => {
         try {
             const url = Config.apiUrl + '/api/report/bill-sale-detail/' + billSaleId;
@@ -98,29 +98,29 @@ export default function BillSalePage() {
 
     return (
         <div>
-            <h1>Sales Invoices</h1>
+            <h1 text-2xl font-bold mb-4>Sales Invoices</h1>
             <div className="table-container">
-                <table className="table table-bordered">
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Status</th>
                             <th>Invoice No.</th>
                             <th>Date</th>
-                            <th>Total Amount</th>
-                            <th className="w-[80px]"></th>
+                            <th className="text-right">Total Amount</th>
+                            <th className="w-[300px] text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        {billSale.map((billSale) => (
-                            <tr key={billSale.id}>
+                        {billSale.map((item) => (
+                            <tr key={item.id}>
                                 <td>
-                                    {billSale.status === 'paid' ? (
-                                        <div className="bg-green-600 text-white px-2 py-1 rounded-xl text-center">
-                                            <i></i>
+                                    {item.status === 'paid' ? (
+                                        <div className="badge-success">
+                                            <i className="fa fa-check mr-2"></i>
                                             Paid
                                         </div>
                                     ) : (
-                                        <div className="bg-red-600 text-white px-2 py-1 rounded-xl text-center">
+                                        <div className="badge-danger">
                                             <i className="fa fa-times mr-2"></i>
                                             Void
                                         </div>
@@ -153,34 +153,36 @@ export default function BillSalePage() {
                     </tbody>
                 </table>
             </div>
-            {showModal && (
-                <Modal title="Invoice Details" onClose={() => setShowModal(false)} size="2xl">
-                    <div className="table-container">
-                        <table className="table">
-                            <thead>
-                                <tr>
-                                    <th>Product Code</th>
-                                    <th>Description</th>
-                                    <th style={{ textAlign: 'right' }}>Quantity</th>
-                                    <th style={{ textAlign: 'right' }}>Unit Price</th>
-                                    <th style={{ textAlign: 'right' }}>Line Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {billSaleDetails.map((item) => (
-                                    <tr key={item.id}>
-                                        <td>{item.production.id}</td>
-                                        <td>{item.production.name}</td>
-                                        <td className="text-right">{item.quantity}</td>
-                                        <td className="text-right">{item.price.toLocaleString()}</td>
-                                        <td className="text-right">{(item.quantity * item.price).toLocaleString()}</td>
+            {
+                showModal && (
+                    <Modal title="Invoice Details" onClose={() => setShowModal(false)} size="2xl">
+                        <div className="table-container">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Description</th>
+                                        <th style={{ textAlign: 'right' }}>Quantity</th>
+                                        <th style={{ textAlign: 'right' }}>Unit Price</th>
+                                        <th style={{ textAlign: 'right' }}>Line Total</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </Modal>
-            )}
-        </div>
+                                </thead>
+                                <tbody>
+                                    {billSaleDetails.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{item.production.id}</td>
+                                            <td>{item.production.name}</td>
+                                            <td className="text-right">{item.quantity}</td>
+                                            <td className="text-right">{item.price.toLocaleString()}</td>
+                                            <td className="text-right">{(item.quantity * item.price).toLocaleString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </Modal>
+                )
+            }
+        </div >
     )
 }
