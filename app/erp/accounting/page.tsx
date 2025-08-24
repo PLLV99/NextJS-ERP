@@ -1,15 +1,12 @@
 'use client'
 
 import { ErrorInterface } from "@/app/interface/ErrorInterface";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
-import { useEffect, useState } from "react"
+import { ProductionInterface } from "@/interface/ProductionInterface";
+import { useEffect, useState, useCallback } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
 import { Config } from "@/app/Config";
 import axios from "axios";
-
-
-
 
 export default function AccountingPage() {
     const [productions, setProductions] = useState<ProductionInterface[]>([]);
@@ -18,11 +15,7 @@ export default function AccountingPage() {
     const [name, setName] = useState<string>('');
     const [showModal, setShowModal] = useState<boolean>(false)
 
-    useEffect(() => {
-        fetchProductions();
-    }, []);
-
-    const fetchProductions = async () => {
+    const fetchProductions = useCallback(async () => {
         try {
             const url = `${Config.apiUrl}/api/productions`;
             const response = await axios.get(url);
@@ -37,16 +30,20 @@ export default function AccountingPage() {
                 icon: 'error'
             });
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        fetchProductions();
+    }, [fetchProductions]);
 
     const handleUpdatePrice = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
             const payload = { price };
             const url = `${Config.apiUrl}/api/productions/updatePrice/${id}`;
-            const respone = await axios.put(url, payload);
+            const response = await axios.put(url, payload);
 
-            if (respone.status === 200) {
+            if (response.status === 200) {
                 fetchProductions();
                 closeModal();
             }
@@ -115,18 +112,18 @@ export default function AccountingPage() {
             </section>
 
             {showModal && (
-                <Modal title="Sset Selling Price" onClose={closeModal}>
+                <Modal title="Set Selling Price" onClose={closeModal}>
                     <form className="flex flex-col gap-4" onSubmit={handleUpdatePrice}>
                         <div>
                             <label className="block text-sm font-medium mb-1">Product Name</label>
-                            <input value={name} disabled className="input input-disabled w-full" />
+                            <input value={name} disabled className="input-field input-disabled w-full" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium mb-1">Selling Price</label>
                             <input type="number"
                                 value={price ?? 0}
                                 onChange={(e) => handleChangePrice(e.target.value)}
-                                className="input w-full"
+                                className="input-field w-full"
                             />
                         </div>
                         <div className="flex justify-end gap-2 mt-4">
