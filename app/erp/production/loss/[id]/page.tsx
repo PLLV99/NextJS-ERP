@@ -1,9 +1,9 @@
 'use client'
 
-import { Config } from "@/app/Config";
-import Modal from "@/app/erp/components/Modal"
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
-import { ProductionLossInterface } from "@/app/interface/ProductionLossInterface";
+import { Config } from "@/Config";
+import Modal from "@/erp/components/Modal"
+import { ProductionInterface } from "@/interface/ProductionInterface";
+import { ProductionLossInterface } from "@/interface/ProductionLossInterface";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
