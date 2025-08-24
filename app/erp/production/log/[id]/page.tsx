@@ -1,13 +1,13 @@
 'use client'
-import { Config } from "@/app/Config";
-import { ProductionInterface } from "@/app/interface/ProductionInterface"
-import { ProductionLogInterface } from "@/app/interface/ProductionLogInterface";
+import { Config } from "@/Config";
+import { ProductionInterface } from "@/interface/ProductionInterface"
+import { ProductionLogInterface } from "@/interface/ProductionLogInterface";
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Swal from "sweetalert2";
-import Modal from "@/app/erp/components/Modal";
+import Modal from "@/erp/components/Modal";
 
 export default function ProductionLog() {
     const [production, setProduction] = useState<ProductionInterface | null>(null);
