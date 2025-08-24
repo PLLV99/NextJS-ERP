@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { Config } from "@/app/Config";
+import { Config } from "@/Config";
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
+import { ProductionInterface } from "@/interface/ProductionInterface";
 import Link from 'next/link';
 
 // This is a React functional component used for managing production data.
