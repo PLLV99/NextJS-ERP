@@ -8,7 +8,7 @@ import Swal from "sweetalert2"
 import { Config } from "@/app/Config"
 import { useParams } from "next/navigation"
 import Modal from "../../components/Modal"
-import { MaterialInterface } from '../../../interface/MaterialInterface';
+import { MaterialInterface } from "@/app/interface/MaterialInterface"
 
 export default function Formula() {
     const [formulas, setFormulas] = useState<FormulaInterface[]>([]);
