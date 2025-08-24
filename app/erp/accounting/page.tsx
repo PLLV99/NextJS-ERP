@@ -1,11 +1,11 @@
 'use client'
 
-import { ErrorInterface } from "@/app/interface/ErrorInterface";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
+import { ErrorInterface } from "@/interface/ErrorInterface";
+import { ProductionInterface } from "@/interface/ProductionInterface";
 import { useEffect, useState, useCallback } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
-import { Config } from "@/app/Config";
+import { Config } from "@/Config";
 import axios from "axios";
 
 export default function AccountingPage() {
