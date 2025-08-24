@@ -1,9 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { Config } from '@/app/Config';
+import { Config } from '@/Config';
 
 
 export default function EditProfile() {
@@ -13,11 +13,7 @@ export default function EditProfile() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const router = useRouter();
 
-    useEffect(() => {
-        fectUserData();
-    }, []);
-
-    const fectUserData = async () => {
+    const fecthUserData = useCallback(async () => {
         try {
             const token = localStorage.getItem(Config.tokenKey);
             const response = await axios.get(`${Config.apiUrl}/api/users/admin-info`, {
@@ -35,11 +31,15 @@ export default function EditProfile() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to fetch user data : ' + error
+                text: 'Failed to fetch user data : ' + (error as Error).message
             });
 
         }
-    }
+    }, []);
+
+    useEffect(() => {
+        fecthUserData();
+    }, [fecthUserData]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -77,7 +77,7 @@ export default function EditProfile() {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to update profile : ' + error
+                text: 'Failed to update profile : ' + (error as Error).message
             });
 
         }
@@ -126,7 +126,7 @@ export default function EditProfile() {
                     />
                 </div>
                 <div className='from-group flex items-center'>
-                    <button type="submit" className="button">
+                    <button type="submit" className="button-add w-full">
                         <i className="fas fa-save mr-2"></i>
                         Update Profile
                     </button>
