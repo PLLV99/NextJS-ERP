@@ -1,7 +1,7 @@
 'use client'
 
 import { ErrorInterface } from "@/app/interface/ErrorInterface";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
+import { ProductionInterface } from "../../interface/ProductionInterface";
 import { useEffect, useState, useCallback } from "react"
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
