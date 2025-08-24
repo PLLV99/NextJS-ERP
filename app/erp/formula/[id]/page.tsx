@@ -10,6 +10,7 @@ import { useParams } from "next/navigation"
 import Modal from "../../components/Modal"
 import { MaterialInterface } from "@/interface/MaterialInterface"
 
+
 export default function Formula() {
     const [formulas, setFormulas] = useState<FormulaInterface[]>([]);
     const [production, setProduction] = useState<ProductionInterface | null>(null);
