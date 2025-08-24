@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback } from "react"
 import Modal from "../components/Modal";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { MaterialInterface } from "@/app/interface/MaterialInterface";
-import { Config } from "@/app/Config";
+import { MaterialInterface } from "@/interface/MaterialInterface";
+import { Config } from "@/Config";
 
 export default function MaterialPage() {
     // State for all materials
