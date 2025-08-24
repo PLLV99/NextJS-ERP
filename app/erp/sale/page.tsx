@@ -1,10 +1,10 @@
 'use client'
 
-import { Config } from "@/app/Config";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
-import { SaleTempInterface } from "@/app/interface/SaleTempInterface";
+import { Config } from "@/Config";
+import { ProductionInterface } from "@/interface/ProductionInterface";
+import { SaleTempInterface } from "@/interface/SaleTempInterface";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Swal from "sweetalert2";
 import Modal from "../components/Modal";
 
@@ -19,11 +19,43 @@ export default function SalePage() {
     const [inputMoney, setInputMoney] = useState<number>(0);
     const [returnMoney, setReturnMoney] = useState<number>(0);
 
+    const fetchProductions = useCallback(async () => {
+        try {
+            const url = Config.apiUrl + '/api/productions'
+            const response = await axios.get(url)
+            if (response.status === 200) {
+                setProductions(response.data)
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: 'error : ' + error
+            })
+        }
+    }, []);
+
+    const fetchDataSaleTemp = useCallback(async () => {
+        try {
+            const url = Config.apiUrl + '/api/SaleTemp';
+            const headers = getHeaders();
+            const response = await axios.get(url, { headers });
+            if (response.status === 200) {
+                setSaleTemps(response.data)
+            }
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: 'error : ' + error
+            })
+        }
+    }, []);
+
     useEffect(() => {
         fetchProductions();
         fetchDataSaleTemp();
-    }, []);
-
+    }, [fetchProductions, fetchDataSaleTemp]);
 
     useEffect(() => {
         let total = 0;
@@ -39,39 +71,6 @@ export default function SalePage() {
     }, [saleTemps]);
 
     // --- API Calls ---
-    const fetchProductions = async () => {
-        try {
-            const url = Config.apiUrl + '/api/productions'
-            const response = await axios.get(url)
-            if (response.status === 200) {
-                setProductions(response.data)
-            }
-        } catch (error) {
-            Swal.fire({
-                title: 'error',
-                icon: 'error',
-                text: 'error : ' + error
-            })
-        }
-    }
-
-    const fetchDataSaleTemp = async () => {
-        try {
-            const url = Config.apiUrl + '/api/SaleTemp';
-            const headers = getHeaders();
-            const response = await axios.get(url, { headers });
-            if (response.status === 200) {
-                setSaleTemps(response.data)
-            }
-        } catch (error) {
-            Swal.fire({
-                title: 'error',
-                icon: 'error',
-                text: 'error : ' + error
-            })
-        }
-    }
-
     const handleChooseProduction = async (production: ProductionInterface) => {
         try {
             const url = Config.apiUrl + '/api/SaleTemp';
@@ -164,32 +163,39 @@ export default function SalePage() {
     }
 
     const handleEndSale = async () => {
-        const confirmButton = await Swal.fire({
-            title: 'Complete this sale?',
-            icon: 'question',
-            text: 'Make sure the payment has been received',
-            showCancelButton: true,
-            confirmButtonText: 'Confirm',
-            cancelButtonText: 'Cancel'
-        });
+        try {
+            const confirmButton = await Swal.fire({
+                title: 'Complete this sale?',
+                icon: 'question',
+                text: 'Make sure the payment has been received',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+                cancelButtonText: 'Cancel'
+            });
 
-        if (confirmButton.isConfirmed) {
-            const url = Config.apiUrl + '/api/SaleTemp/endSale';
-            const headers = getHeaders();
-            const payload = {
-                inputMoney: inputMoney,
-                discount: discount,
-                total: total
+            if (confirmButton.isConfirmed) {
+                const url = Config.apiUrl + '/api/SaleTemp/endSale';
+                const headers = getHeaders();
+                const payload = {
+                    inputMoney: inputMoney,
+                    discount: discount,
+                    total: total
+                }
+                const response = await axios.post(url, payload, { headers });
+                if (response.status === 200) {
+                    closeModalEndSale();
+                    fetchDataSaleTemp();
+                }
+            } else {
+                openModalEndSale();
             }
-            const response = await axios.post(url, payload, { headers });
-            if (response.status === 200) {
-                closeModalEndSale();
-                fetchDataSaleTemp();
-            }
-        } else {
-            openModalEndSale();
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                icon: 'error',
+                text: (error as Error).message
+            })
         }
-
     }
 
     // --- Modal Controls ---
@@ -244,7 +250,7 @@ export default function SalePage() {
     return (
         <div className="container">
             <h1 className="text-2xl font-bold">Sales</h1>
-            <div className="flex justify-end">
+            <div className="flex justify-end my-4">
                 <span className="text-2xl font-bold bg-gray-950 px-4 py-2 rounded-md text-green-300 border border-green-300">
                     {total.toLocaleString('en-Us', { minimumFractionDigits: 2 })}
                 </span>
@@ -252,7 +258,7 @@ export default function SalePage() {
 
             <div className="flex flex-col gap-2">
                 <div>
-                    <input type="text" placeholder="Enter product code" className="form-input" />
+                    <input type="text" placeholder="Enter product code" className="input-field flex-grow" />
                     <button className="button" onClick={openModalProductions}>
                         <i className="fa-solid fa-search mr-3"></i>
                         Search
@@ -272,9 +278,9 @@ export default function SalePage() {
                             <tr>
                                 <th>Product ID</th>
                                 <th>Product Name</th>
-                                <th>Price</th>
-                                <th>Qty</th>
-                                <th>Total</th>
+                                <th className="text-right">Price</th>
+                                <th className="text-center">Qty</th>
+                                <th className="text-right">Total</th>
                                 <th className="w-[60px]">Actions</th>
                             </tr>
                         </thead>
