@@ -1,8 +1,8 @@
 'use client';
 
-import { Config } from "@/app/Config";
+import { Config } from "@/Config";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Swal from "sweetalert2";
 
 
@@ -12,11 +12,7 @@ export default function DashboardPage() {
     const [totalProduct, setTotalProduct] = useState(0);
     const [sumLoss, setSumLoss] = useState(0);
 
-    useEffect(() => {
-        fetchData();
-    }, [])
-
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/report/dashboard';
             const response = await axios.get(url);
@@ -31,32 +27,34 @@ export default function DashboardPage() {
         } catch (error) {
             Swal.fire({
                 title: 'Error',
-                text: error as string,
+                text: (error as Error).message,
                 icon: 'error',
             })
         }
-    }
+    }, []);
 
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData])
 
     return (
         <div>
             <div className="text-2xl font-bold mb-2">Dashboard</div>
-            <div className="flex gap-2 text-end">
-                <div className="flex flex-col gap-2 bg-blue-500 text-white rounded-lg p-2 w-full">
-                    <div>Production  Quantity (units)</div>
-                    <div>{sumQty.toLocaleString()}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-end">
+                <div className="flex flex-col gap-2 bg-blue-500 text-white rounded-lg p-4">
                 </div>
-                <div className="flex flex-col gap-2 bg-green-700 text-white rounded-lg p-2 w-full">
-                    <div>Sales Quantity (units)</div>
-                    <div>{sumIncome.toLocaleString()}</div>
+                <div className="flex flex-col gap-2 bg-green-700 text-white rounded-lg p-4">
+                    <div className="text-lg">Sales Revenue</div>
+                    <div className="text-3xl font-bold">${sumIncome.toLocaleString()}</div>
                 </div>
-                <div className="flex flex-col gap-2 bg-yellow-600 text-white rounded-lg p-2 w-full">
-                    <div>Number of Products</div>
-                    <div>{totalProduct.toLocaleString()}</div>
+                <div className="flex flex-col gap-2 bg-yellow-600 text-white rounded-lg p-4">
+                    <div className="text-lg">Number of Products</div>
+                    <div className="text-3xl font-bold">{totalProduct.toLocaleString()}</div>
                 </div>
-                <div className="flex flex-col gap-2 bg-red-500 text-white rounded-lg p-2 w-full">
-                    <div>Loss Quantity (units)</div>
-                    <div>{sumLoss.toLocaleString()}</div>
+                <div className="flex flex-col gap-2 bg-red-500 text-white rounded-lg p-4">
+                    <div className="text-lg">Loss Quantity</div>
+                    <div className="text-3xl font-bold">{sumLoss.toLocaleString()}</div>
                 </div>
             </div>
         </div>
