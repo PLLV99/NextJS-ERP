@@ -1,12 +1,12 @@
 'use client'
 
 // Import required libraries
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Swal from "sweetalert2" // สำหรับ popup แจ้งเตือน / For alert popups
-import { Config } from "@/app/Config" // ไฟล์คอนฟิกสำหรับ API URL และ Token Key
+import { Config } from "@/Config" // ไฟล์คอนฟิกสำหรับ API URL และ Token Key
 import Modal from "../components/Modal" // คอมโพเนนต์ Modal สำหรับแสดงกล่อง popup
 import axios from "axios" // ไลบรารีสำหรับทำ HTTP requests
-import { UserInterface } from "@/app/interface/UserInterface"
+import { UserInterface } from "@/interface/UserInterface"
 
 export default function Page() {
     // State สำหรับเก็บข้อมูลต่างๆ / States for storing data
@@ -19,13 +19,8 @@ export default function Page() {
     const [passwordConfirm, setPasswordConfirm] = useState(''); // Confirm password in form
     const [role, setRole] = useState('employee'); // User role (employee/admin)
 
-    // Load users when page opens
-    useEffect(() => {
-        fetchUsers();
-    }, []);
-
     // Fetch users from API
-    const fetchUsers = async () => {
+    const fetchUsers = useCallback(async () => {
         try {
             const token = localStorage.getItem(Config.tokenKey);
             if (!token) {
@@ -44,7 +39,7 @@ export default function Page() {
             const response = await axios.get(`${Config.apiUrl}/api/users`, { headers }); //  Call API to fetch users
             // If successful (status 200), store users data
 
-            if (response.status == 200) {
+            if (response.status === 200) {
                 setUsers(response.data);
             }
             // If not successful, show error message
@@ -55,7 +50,12 @@ export default function Page() {
                 icon: 'error'
             })
         }
-    }
+    }, []);
+
+    // Load users when page opens
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
 
     // Handle form submit (add/edit user)
     const handleSubmit = async (e: React.FormEvent) => {
@@ -96,7 +96,7 @@ export default function Page() {
             if (response.status === 200) {
                 Swal.fire({
                     icon: 'success',
-                    title: 'success',
+                    title: 'Success',
                     text: `User ${editingUser ? 'updated' : 'created'} successfully`,
                     timer: 1000
                 });
@@ -125,7 +125,7 @@ export default function Page() {
             const result = await Swal.fire({
                 icon: 'warning',
                 title: 'Are you sure?',
-                text: `Do you want to delete user ${user.username}`,
+                text: `Do you want to delete user ${user.username}?`,
                 showCancelButton: true,
                 showConfirmButton: true
             })
@@ -269,7 +269,7 @@ export default function Page() {
                             <input type="password" className="form-input"
                                 value={passwordConfirm}
                                 onChange={e => setPasswordConfirm(e.target.value)}
-                                required={!editingUser}
+                                required={!editingUser || password !== ''}
                             />
                         </div>
                         {/* Role */}
