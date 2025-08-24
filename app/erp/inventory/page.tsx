@@ -2,13 +2,13 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import Modal from "../components/Modal"
-import { Config } from "@/app/Config";
+import { Config } from "@/Config";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { StoreInterface } from "@/app/interface/StoreInterface";
-import { ProductionInterface } from "@/app/interface/ProductionInterface";
-import { StoreImportInterface } from "@/app/interface/StoreImportInterface";
-import { TransferStoreInterface } from "@/app/interface/TransferStoreInterface";
+import { StoreInterface } from "@/interface/StoreInterface";
+import { ProductionInterface } from "@/interface/ProductionInterface";
+import { StoreImportInterface } from "@/interface/StoreImportInterface";
+import { TransferStoreInterface } from "@/interface/TransferStoreInterface";
 
 
 // --- State ----
