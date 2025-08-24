@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { FormulaInterface } from "@/app/interface/FormulaInterface"
 import { ProductionInterface } from "@/app/interface/ProductionInterface"
 import axios from "axios"
@@ -20,13 +20,7 @@ export default function Formula() {
     const [unit, setUnit] = useState<string>('');
     const { id } = useParams();
 
-    useEffect(() => {
-        fetchProduction();
-        fetchMaterials();
-        fetchFormulas();
-    }, [])
-
-    const fetchProduction = async () => {
+    const fetchProduction = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/productions/' + id;
             const response = await axios.get(url);
@@ -48,9 +42,9 @@ export default function Formula() {
                 icon: 'error'
             })
         }
-    }
+    }, [id]);
 
-    const fetchMaterials = async () => {
+    const fetchMaterials = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/materials';
             const response = await axios.get(url);
@@ -73,9 +67,9 @@ export default function Formula() {
                 icon: 'error'
             })
         }
-    }
+    }, []);
 
-    const fetchFormulas = async () => {
+    const fetchFormulas = useCallback(async () => {
         try {
             const url = Config.apiUrl + '/api/formulas/' + id;
             const response = await axios.get(url);
@@ -97,7 +91,13 @@ export default function Formula() {
                 icon: 'error'
             })
         }
-    }
+    }, [id]);
+
+    useEffect(() => {
+        fetchProduction();
+        fetchMaterials();
+        fetchFormulas();
+    }, [fetchProduction, fetchMaterials, fetchFormulas])
 
     const openModal = () => {
         setShowModal(true);
@@ -180,7 +180,7 @@ export default function Formula() {
 
     return (
         <div>
-            <h1>Bill of Materials: {production?.name}</h1>
+            <h1 className="text-2xl font-bold">Bill of Materials: {production?.name}</h1>
             <div className="flex flex-col gap-2 mt-3">
                 <div>
                     <button className="button-add" onClick={openModal}>
@@ -222,7 +222,7 @@ export default function Formula() {
                         <div className="flex flex-col gap-2">
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="material">Material</label>
-                                <select id="material" value={materialId}
+                                <select id="material" value={materialId} className="input-field"
                                     onChange={(e) => setMaterialId(Number(e.target.value))}>
                                     {materials.map((material) => (
                                         <option key={material.id} value={material.id}>
@@ -233,12 +233,12 @@ export default function Formula() {
                             </div>
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="qty">Quantity</label>
-                                <input type="text" id="qty" value={qty}
+                                <input type="text" id="qty" value={qty} className="input-field"
                                     onChange={(e) => setQty(Number(e.target.value))} />
                             </div>
                             <div className="flex flex-col gap-1">
                                 <label htmlFor="unit">Unit</label>
-                                <input type="unit" id="unit" value={unit}
+                                <input type="unit" id="unit" value={unit} className="input-field"
                                     onChange={(e) => setUnit(e.target.value)} />
                             </div>
                             <div className="flex justify-end">
