@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, useEffect, useCallback } from "react"
-import { FormulaInterface } from "@/app/interface/FormulaInterface"
-import { ProductionInterface } from "@/app/interface/ProductionInterface"
+import { FormulaInterface } from "@/interface/FormulaInterface"
+import { ProductionInterface } from "@/interface/ProductionInterface"
 import axios from "axios"
 import Swal from "sweetalert2"
-import { Config } from "@/app/Config"
+import { Config } from "@/Config"
 import { useParams } from "next/navigation"
 import Modal from "../../components/Modal"
-import { MaterialInterface } from "@/app/interface/MaterialInterface"
+import { MaterialInterface } from "@/interface/MaterialInterface"
 
 export default function Formula() {
     const [formulas, setFormulas] = useState<FormulaInterface[]>([]);
