@@ -16,7 +16,7 @@ export default function EditProfile() {
     const fecthUserData = useCallback(async () => {
         try {
             const token = localStorage.getItem(Config.tokenKey);
-            const response = await axios.get(`${Config.apiUrl}/api/users/admin-info`, {
+            const response = await axios.get(`${Config.apiUrl}/users/admin-info`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

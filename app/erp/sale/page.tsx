@@ -21,7 +21,7 @@ export default function SalePage() {
 
     const fetchProductions = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/productions'
+            const url = Config.apiUrl + '/productions'
             const response = await axios.get(url)
             if (response.status === 200) {
                 setProductions(response.data)
@@ -37,7 +37,7 @@ export default function SalePage() {
 
     const fetchDataSaleTemp = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/SaleTemp';
+            const url = Config.apiUrl + '/SaleTemp';
             const headers = getHeaders();
             const response = await axios.get(url, { headers });
             if (response.status === 200) {
@@ -73,7 +73,7 @@ export default function SalePage() {
     // --- API Calls ---
     const handleChooseProduction = async (production: ProductionInterface) => {
         try {
-            const url = Config.apiUrl + '/api/SaleTemp';
+            const url = Config.apiUrl + '/SaleTemp';
             const payload = {
                 production: {
                     id: production.id
@@ -105,7 +105,7 @@ export default function SalePage() {
             });
 
             if (buttonConfirm.isConfirmed) {
-                const url = Config.apiUrl + '/api/SaleTemp/' + id;
+                const url = Config.apiUrl + '/SaleTemp/' + id;
                 const headers = getHeaders();
                 const response = await axios.delete(url, { headers })
 
@@ -125,7 +125,7 @@ export default function SalePage() {
 
     const handleUpQty = async (id: number) => {
         try {
-            const url = Config.apiUrl + '/api/SaleTemp/' + id;
+            const url = Config.apiUrl + '/SaleTemp/' + id;
             const saleTemp = saleTemps.find((saleTemp) => saleTemp.id === id);
             if (saleTemp) {
                 const payload = {
@@ -144,7 +144,7 @@ export default function SalePage() {
     }
     const handleDownQty = async (id: number) => {
         try {
-            const url = Config.apiUrl + '/api/SaleTemp/' + id;
+            const url = Config.apiUrl + '/SaleTemp/' + id;
             const saleTemp = saleTemps.find((saleTemp) => saleTemp.id === id);
             if (saleTemp && saleTemp?.qty > 1) {
                 const payload = {
@@ -174,7 +174,7 @@ export default function SalePage() {
             });
 
             if (confirmButton.isConfirmed) {
-                const url = Config.apiUrl + '/api/SaleTemp/endSale';
+                const url = Config.apiUrl + '/SaleTemp/endSale';
                 const headers = getHeaders();
                 const payload = {
                     inputMoney: inputMoney,

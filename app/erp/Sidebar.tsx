@@ -38,7 +38,7 @@ export default function Sidebar() {
                 // router.push('/');
                 return;
             }
-            const response = await axios.get(`${Config.apiUrl}/api/users/admin-info`, {
+            const response = await axios.get(`${Config.apiUrl}/users/admin-info`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

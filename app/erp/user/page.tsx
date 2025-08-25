@@ -36,7 +36,7 @@ export default function Page() {
                 'Authorization': `Bearer ${token}`
             };
 
-            const response = await axios.get(`${Config.apiUrl}/api/users`, { headers }); //  Call API to fetch users
+            const response = await axios.get(`${Config.apiUrl}/users`, { headers }); //  Call API to fetch users
             // If successful (status 200), store users data
 
             if (response.status === 200) {
@@ -73,8 +73,8 @@ export default function Page() {
 
         try {
             const url = editingUser
-                ? `${Config.apiUrl}/api/users/admin-update-profile/${editingUser.id}`
-                : `${Config.apiUrl}/api/users/admin-create`
+                ? `${Config.apiUrl}/users/admin-update-profile/${editingUser.id}`
+                : `${Config.apiUrl}/users/admin-create`
 
 
             const payload = {
@@ -134,7 +134,7 @@ export default function Page() {
                 const headers = {
                     'Authorization': 'Bearer ' + localStorage.getItem(Config.tokenKey)  // Use API Key from localStorage
                 }
-                const url = `${Config.apiUrl}/api/users/admin-delete/${user.id}`; // URL for deleting user
+                const url = `${Config.apiUrl}/users/admin-delete/${user.id}`; // URL for deleting user
                 // Send delete request to API
                 const response = await axios.delete(url, { headers })
 

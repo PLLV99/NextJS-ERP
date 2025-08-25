@@ -21,7 +21,7 @@ export default function ProductionLog() {
     const { id } = useParams();
 
     const fetchProductionLogs = useCallback(async () => {
-        const url = Config.apiUrl + '/api/production-logs/' + id;
+        const url = Config.apiUrl + '/production-logs/' + id;
 
         try {
             const response = await axios.get(url);
@@ -38,7 +38,7 @@ export default function ProductionLog() {
     }, [id]);
 
     const fecthProduction = useCallback(async () => {
-        const url = Config.apiUrl + '/api/productions/' + id;
+        const url = Config.apiUrl + '/productions/' + id;
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
@@ -72,7 +72,7 @@ export default function ProductionLog() {
     }
 
     const handleSave = async () => {
-        const url = Config.apiUrl + '/api/production-logs';
+        const url = Config.apiUrl + '/production-logs';
 
         try {
             const payload = {
@@ -121,7 +121,7 @@ export default function ProductionLog() {
         })
 
         if (confirm.isConfirmed) {
-            const url = Config.apiUrl + '/api/production-logs/' + id;
+            const url = Config.apiUrl + '/production-logs/' + id;
             try {
                 const response = await axios.delete(url);
                 if (response.status === 200) {

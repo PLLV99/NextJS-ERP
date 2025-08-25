@@ -23,7 +23,7 @@ export default function ProductionLoss() {
     const router = useRouter();
 
     const fetchProductionLoss = useCallback(async () => {
-        const url = Config.apiUrl + '/api/production-loss/' + id;
+        const url = Config.apiUrl + '/production-loss/' + id;
 
         try {
             const response = await axios.get(url);
@@ -39,7 +39,7 @@ export default function ProductionLoss() {
     }, [id]);
 
     const fetchProduction = useCallback(async () => {
-        const url = Config.apiUrl + '/api/productions/' + id;
+        const url = Config.apiUrl + '/productions/' + id;
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
@@ -72,7 +72,7 @@ export default function ProductionLoss() {
     }
 
     const handleSave = async () => {
-        const url = Config.apiUrl + '/api/production-loss';
+        const url = Config.apiUrl + '/production-loss';
 
         try {
             const payload = {
@@ -121,7 +121,7 @@ export default function ProductionLoss() {
         });
 
         if (confirm.isConfirmed) {
-            const url = Config.apiUrl + '/api/production-loss/' + id;
+            const url = Config.apiUrl + '/production-loss/' + id;
             try {
                 const response = await axios.delete(url);
                 if (response.status === 200) {

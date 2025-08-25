@@ -17,7 +17,7 @@ export default function AccountingPage() {
 
     const fetchProductions = useCallback(async () => {
         try {
-            const url = `${Config.apiUrl}/api/productions`;
+            const url = `${Config.apiUrl}/productions`;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -40,7 +40,7 @@ export default function AccountingPage() {
         e.preventDefault();
         try {
             const payload = { price };
-            const url = `${Config.apiUrl}/api/productions/updatePrice/${id}`;
+            const url = `${Config.apiUrl}/productions/updatePrice/${id}`;
             const response = await axios.put(url, payload);
 
             if (response.status === 200) {

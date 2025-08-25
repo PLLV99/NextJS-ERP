@@ -14,7 +14,7 @@ export default function DashboardPage() {
 
     const fetchData = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/report/dashboard';
+            const url = Config.apiUrl + '/report/dashboard';
             const response = await axios.get(url);
 
             if (response.status === 200) {

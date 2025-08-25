@@ -24,7 +24,7 @@ export default function MaterialPage() {
     // Fetch all materials from backend
     const fetchData = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/materials'
+            const url = Config.apiUrl + '/materials'
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -47,7 +47,7 @@ export default function MaterialPage() {
     // Save (add or edit) material
     const handleSave = async () => {
         try {
-            let url = Config.apiUrl + '/api/materials'
+            let url = Config.apiUrl + '/materials'
             const payload = {
                 name: name,
                 unitName: unitName,
@@ -57,7 +57,7 @@ export default function MaterialPage() {
 
             if (id > 0) {
                 // Edit existing material
-                url = Config.apiUrl + '/api/materials/' + id;
+                url = Config.apiUrl + '/materials/' + id;
                 const response = await axios.put(url, payload)
                 status = response.status;
                 setId(0);
@@ -113,7 +113,7 @@ export default function MaterialPage() {
                 cancelButtonText: 'Cancel'
             })
             if (confirm.isConfirmed) {
-                const url = Config.apiUrl + '/api/materials/' + id;
+                const url = Config.apiUrl + '/materials/' + id;
                 const response = await axios.delete(url);
                 if (response.status === 200) {
                     fetchData();

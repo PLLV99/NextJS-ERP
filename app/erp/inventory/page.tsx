@@ -51,7 +51,7 @@ export default function InventoryPage() {
 
     // --- API Functions ---
     const fetchStores = useCallback(async () => {
-        const url = Config.apiUrl + '/api/store';
+        const url = Config.apiUrl + '/store';
         try {
             const response = await axios.get(url);
             if (response.status === 200) {
@@ -68,7 +68,7 @@ export default function InventoryPage() {
     }, []);
 
     const fetchProductions = useCallback(async () => {
-        const url = Config.apiUrl + '/api/productions';
+        const url = Config.apiUrl + '/productions';
         try {
             const response = await axios.get(url);
 
@@ -96,7 +96,7 @@ export default function InventoryPage() {
 
     const fetchStoreImports = async (id: number) => {
         try {
-            const url = `${Config.apiUrl}/api/store/import/${id}`;
+            const url = `${Config.apiUrl}/store/import/${id}`;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -116,7 +116,7 @@ export default function InventoryPage() {
 
     const fetchDataTransferStore = async () => {
         try {
-            const url = Config.apiUrl + '/api/transfer-stock';
+            const url = Config.apiUrl + '/transfer-stock';
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -145,7 +145,7 @@ export default function InventoryPage() {
             }
 
             let status = 0;
-            let url = Config.apiUrl + '/api/store';
+            let url = Config.apiUrl + '/store';
 
             if (id > 0) {
                 // Update existing store
@@ -181,7 +181,7 @@ export default function InventoryPage() {
             showConfirmButton: true
         });
         if (button.isConfirmed) {
-            const url = Config.apiUrl + '/api/store/' + id;
+            const url = Config.apiUrl + '/store/' + id;
             try {
                 const response = await axios.delete(url);
                 if (response.status === 200) {
@@ -226,7 +226,7 @@ export default function InventoryPage() {
                 importDate: new Date().toISOString()
             }
 
-            const url = Config.apiUrl + '/api/store/import';
+            const url = Config.apiUrl + '/store/import';
             const response = await axios.post(url, data);
 
             if (response.status === 200) {
@@ -259,7 +259,7 @@ export default function InventoryPage() {
         })
 
         if (button.isConfirmed) {
-            const url = Config.apiUrl + '/api/store/import/' + id;
+            const url = Config.apiUrl + '/store/import/' + id;
 
             try {
                 await axios.delete(url);
@@ -278,7 +278,7 @@ export default function InventoryPage() {
     const changeProduction = async (id: number) => {
         setProductionId(id);
         try {
-            const url = Config.apiUrl + '/api/store/data-for-import/' + id;
+            const url = Config.apiUrl + '/store/data-for-import/' + id;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -318,7 +318,7 @@ export default function InventoryPage() {
                 remark: remarkTransfer,
                 createdAt: transferCreatedAt.toISOString()
             }
-            const url = Config.apiUrl + '/api/transfer-stock'
+            const url = Config.apiUrl + '/transfer-stock'
             const response = await axios.post(url, payload);
 
             if (response.status === 200) {
@@ -353,7 +353,7 @@ export default function InventoryPage() {
             });
 
             if (button.isConfirmed) {
-                const url = Config.apiUrl + '/api/transfer-stock/' + id
+                const url = Config.apiUrl + '/transfer-stock/' + id
                 const response = await axios.delete(url);
                 if (response.status === 200) {
                     fetchDataTransferStore();

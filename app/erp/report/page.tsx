@@ -13,7 +13,7 @@ export default function ReportPage() {
 
     const fetchData = useCallback(async () => {
         try { 
-            const url = Config.apiUrl + '/api/report/sum-income-per-month/' + year;
+            const url = Config.apiUrl + '/report/sum-income-per-month/' + year;
             const response = await axios.get(url);
 
             if (response.status === 200) {

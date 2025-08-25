@@ -17,7 +17,7 @@ export default function BillSalePage() {
 
     const fetchData = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/report/bill-sales';
+            const url = Config.apiUrl + '/report/bill-sales';
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -40,7 +40,7 @@ export default function BillSalePage() {
 
     const fetchDataBillSaleDetail = async (billSaleId: number) => {
         try {
-            const url = Config.apiUrl + '/api/report/bill-sale-detail/' + billSaleId;
+            const url = Config.apiUrl + '/report/bill-sale-detail/' + billSaleId;
             const response = await axios.get(url);
 
             if (response.status === 200) {
@@ -67,7 +67,7 @@ export default function BillSalePage() {
         });
 
         if (buttonConfirm.isConfirmed) {
-            const url = Config.apiUrl + '/api/report/bill-sale/' + billSale.id;
+            const url = Config.apiUrl + '/report/bill-sale/' + billSale.id;
             const response = await axios.delete(url)
 
             if (response.status === 200) {
@@ -86,7 +86,7 @@ export default function BillSalePage() {
         });
 
         if (buttonConfirm.isConfirmed) {
-            const url = Config.apiUrl + '/api/report/bill-sale/' + billSale.id;
+            const url = Config.apiUrl + '/report/bill-sale/' + billSale.id;
             const response = await axios.put(url);
 
             if (response.status === 200) {

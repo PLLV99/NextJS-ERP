@@ -23,7 +23,7 @@ export default function Formula() {
 
     const fetchProduction = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/productions/' + id;
+            const url = Config.apiUrl + '/productions/' + id;
             const response = await axios.get(url);
 
             if (response.status == 200) {
@@ -47,7 +47,7 @@ export default function Formula() {
 
     const fetchMaterials = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/materials';
+            const url = Config.apiUrl + '/materials';
             const response = await axios.get(url);
 
             if (response.status == 200) {
@@ -72,7 +72,7 @@ export default function Formula() {
 
     const fetchFormulas = useCallback(async () => {
         try {
-            const url = Config.apiUrl + '/api/formulas/' + id;
+            const url = Config.apiUrl + '/formulas/' + id;
             const response = await axios.get(url);
 
             if (response.status == 200) {
@@ -113,7 +113,7 @@ export default function Formula() {
 
     const handleSave = async () => {
         try {
-            const url = Config.apiUrl + '/api/formulas'
+            const url = Config.apiUrl + '/formulas'
             const payload = {
                 production: {
                     id: production?.id
@@ -156,7 +156,7 @@ export default function Formula() {
             })
 
             if (confirm.isConfirmed) {
-                const url = Config.apiUrl + '/api/formulas/' + id;
+                const url = Config.apiUrl + '/formulas/' + id;
                 const response = await axios.delete(url);
 
                 if (response.status == 200) {

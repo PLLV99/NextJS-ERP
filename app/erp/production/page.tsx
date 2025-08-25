@@ -30,7 +30,7 @@ export default function Production() {
         'Authorization': 'Bearer ' + token
       };
       // Make a GET request to the API to get the list of productions.
-      const response = await axios.get(`${Config.apiUrl}/api/productions`, { headers });
+      const response = await axios.get(`${Config.apiUrl}/productions`, { headers });
 
       // If the request is successful, update the state with the fetched data.
       if (response.status === 200) {
@@ -90,7 +90,7 @@ export default function Production() {
         // Retrieve the token from local storage.
         const token = localStorage.getItem(Config.tokenKey);
         // Make a DELETE request to the API using the production item's id.
-        await axios.delete(`${Config.apiUrl}/api/productions/${production.id}`, {
+        await axios.delete(`${Config.apiUrl}/productions/${production.id}`, {
           headers: {
             'Authorization': 'Bearer ' + token
           }
@@ -136,11 +136,11 @@ export default function Production() {
 
       if (editingProduction) {
         // If editingProduction is set, update the production item using PUT.
-        const url = `${Config.apiUrl}/api/productions/${editingProduction.id}`;
+        const url = `${Config.apiUrl}/productions/${editingProduction.id}`;
         await axios.put(url, data, { headers });
       } else {
         // Otherwise, create a new production item using POST.
-        const url = `${Config.apiUrl}/api/productions`;
+        const url = `${Config.apiUrl}/productions`;
         await axios.post(url, data, { headers });
       }
 
