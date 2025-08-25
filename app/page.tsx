@@ -13,7 +13,7 @@ export default function Home() {
 
   const handleSignIn = async () => {
     try {
-      const url = `${Config.apiUrl}/api/users/admin-signin`;
+      const url = `${Config.apiUrl}/users/admin-signin`;
       const payload = {
         username: username,
         password: password
