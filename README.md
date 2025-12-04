@@ -1,3 +1,28 @@
+# NextJS-ERP — Notes
+
+This repo uses Next.js 16 with Turbopack enabled by default.
+
+Summary of recent changes
+- `next.config.ts` includes a `turbopack.root` setting to ensure Turbopack infers the correct workspace root.
+- The legacy `middleware.ts` was migrated to the new `proxy.ts` convention (see `proxy.ts`). The original middleware file was kept as a disabled backup and then removed.
+
+Common commands
+- Run production build (default, Turbopack):
+  ```bash
+  npm run build
+  ```
+- Force Webpack build (if needed):
+  ```bash
+  npx next build --webpack
+  # or
+  NEXT_DISABLE_TURBOPACK=1 npm run build
+  ```
+
+Proxy / middleware notes
+- The repo now uses `proxy.ts` at the repository root to implement request-level redirects/guards.
+- `proxy.ts` implements the same logic previously present in `middleware.ts`: it checks a cookie (`Config.tokenKey`) and redirects to `/` when the token is missing. The file includes a `config.matcher` limiting it to routes under `/erp`.
+
+If you want me to re-enable or permanently remove any backup files, or add more documentation, tell me what to do next.
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
