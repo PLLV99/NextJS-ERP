@@ -37,88 +37,80 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 If you want me to add more sections (environment variables, architecture diagram, CI steps), tell me what to include and I will update the README accordingly.
 
-# NextJS-ERP — Project README
+## NextJS-ERP
 
-Short description (EN):
-This repository contains a Next.js 16 application for a simple ERP UI built using the App Router. It includes features for accounting, inventory, production, sales and user management.
+NextJS-ERP is a Next.js 16 (App Router) application that provides a minimal ERP UI for accounting, inventory, production, sales and user management.
 
-คำอธิบายสั้น ๆ (TH):
-โปรเจ็คนี้เป็นแอป Next.js 16 (App Router) สำหรับระบบ ERP เบื้องต้น มีหน้าฟีเจอร์สำหรับบัญชี, สินค้าคงคลัง, การผลิต, การขาย และการจัดการผู้ใช้
+This README is intentionally concise — it covers the commands and pointers you need to run and develop the project. For detailed notes (proxy migration, env, CI) see the `docs/` folder (or ask me to add it).
 
-Getting started / การเริ่มต้น
+Quick start
+
 - Install dependencies:
   ```bash
   npm install
   ```
-- Run development server:
+- Start development server:
   ```bash
   npm run dev
-  # Open http://localhost:3000
   ```
-
-Production build / คำสั่ง build
-- Default (Turbopack — recommended):
+- Production build:
   ```bash
   npm run build
+  npm start
   ```
-- Force Webpack (if you need webpack-only behavior or troubleshooting):
+
+Useful scripts
+
+- `npm run dev` — start dev server (hot reload)
+- `npm run build` — production build (Turbopack by default)
+- `npm start` — start the production server after build
+- `npm run lint` — run ESLint
+
+Turbopack and Webpack
+
+- Next.js 16 enables Turbopack by default. This project contains a small `webpack` customization (alias `@`) so we added `turbopack.root` in `next.config.ts` to avoid a Turbopack/webpack conflict.
+- If you need to force Webpack instead of Turbopack:
   ```bash
   npx next build --webpack
-  # or (cross-shell note: on Windows bash the env var works as below)
+  # or
   NEXT_DISABLE_TURBOPACK=1 npm run build
   ```
 
-Why Turbopack changes were made / เหตุผลการแก้ไข Turbopack
-- Next.js 16 enables Turbopack by default. Because the project had a custom `webpack` configuration (alias for `@`), Next required an explicit `turbopack` config to avoid an error. We added `turbopack.root` in `next.config.ts` so Turbopack correctly infers the workspace root.
+Proxy (replacement for middleware)
 
-Proxy migration (middleware → proxy) / การย้ายจาก middleware ไป proxy
-- Modern Next.js replaces the `middleware` file convention with `proxy`. To follow the latest convention and remove the deprecation warning we migrated the logic from `middleware.ts` to `proxy.ts` (root of repo).
-- What the proxy does:
-  - Reads a cookie using `Config.tokenKey` and redirects to `/` when token is missing.
-  - The proxy only applies to paths under `/erp` (see `config.matcher` in `proxy.ts`).
+- The project uses `proxy.ts` (at repository root) as the modern replacement for `middleware.ts`.
+- `proxy.ts` implements an auth guard that checks a cookie named by `Config.tokenKey` and redirects unauthenticated requests to `/` for routes under `/erp`.
 
-Where to look / ไฟล์สำคัญ
-- `next.config.ts` — project config (includes `turbopack.root` and custom webpack alias for `@`).
-- `proxy.ts` — request-level guard (replacement for `middleware.ts`).
-- `app/` — application pages and components.
-- `app/Config.ts` — configuration including `tokenKey` used by the proxy.
+Environment variables
 
-Environment variables / ตัวแปรสภาพแวดล้อม
-This project uses a small `Config` object in `app/Config.ts` to centralize a few settings. The file currently defines the following keys (defaults are shown in code):
+The project centralizes a few settings in `app/Config.ts`. Current keys and suggested env names:
 
-- `apiUrl` (string) — base path for API calls. Default: `'/api'`.
-- `apiKey` (string) — a shared API key used in some requests or services. Default: `'1234567890'`.
-- `tokenKey` (string) — the cookie key name used to store the auth token. Default: `'token_erp'`.
+- `apiUrl` — base API path. Suggested env: `NEXT_PUBLIC_API_URL` (client-safe).
+- `apiKey` — service API key. Suggested env: `API_KEY` (server-only).
+- `tokenKey` — cookie name for auth token. Suggested env: `NEXT_PUBLIC_TOKEN_KEY`.
 
-If you prefer to load these values from environment variables, you can update `app/Config.ts` to read from `process.env` (server-side) or inject them at build time. Example (server-side safe pattern):
-
-```ts
-export const Config = {
-  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
-  apiKey: process.env.API_KEY || '1234567890',
-  tokenKey: process.env.NEXT_PUBLIC_TOKEN_KEY || 'token_erp',
-};
+Example `.env` (not committed):
+```
+NEXT_PUBLIC_API_URL=https://api.example.com
+API_KEY=your-secret-api-key
+NEXT_PUBLIC_TOKEN_KEY=token_erp
 ```
 
-Recommended environment variables (example names):
-- `NEXT_PUBLIC_API_URL` — public base URL for client-side API calls (e.g. `https://api.example.com`).
-- `API_KEY` — secret API key (server-only).
-- `NEXT_PUBLIC_TOKEN_KEY` — cookie name used in the client for the auth token.
+Security note: never expose sensitive secrets with the `NEXT_PUBLIC_` prefix; use server-only env vars for secrets.
 
-Note on secrets: keep truly secret values (like `API_KEY`) out of client bundles — use server-only env vars (no `NEXT_PUBLIC_` prefix) and access them only from server-side code or API routes.
+Where to look
 
-Testing & validation / ทดสอบ
-- Build locally to verify production build:
-  ```bash
-  npm run build
-  ```
-- Run the app and test a protected route under `/erp` to confirm redirect behavior when `Config.tokenKey` cookie is absent.
+- `next.config.ts` — project config and `turbopack.root`
+- `proxy.ts` — request-level guard (auth check)
+- `app/Config.ts` — central configuration
+- `app/` — app routes, components, and pages
 
-Deployment notes / การDeploy
-- Deploy as a standard Next.js app (Vercel, Azure Static Web Apps, or container). If deploying to an environment that relies on Webpack-only features, consider the `NEXT_DISABLE_TURBOPACK=1` option or `--webpack` flag during build.
+Contributing
 
-Contributing / การร่วมพัฒนา
-- Create a branch, make smaller PRs, and include a clear description of the change.
+- Fork & create a branch for changes
+- Keep PRs small and focused
+
+If you want the README shorter, or want me to add `docs/DETAILS.md` with step-by-step migration notes and CI examples, say so and I'll add it and push the change.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
