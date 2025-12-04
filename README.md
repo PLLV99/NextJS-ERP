@@ -83,6 +83,30 @@ Where to look / ไฟล์สำคัญ
 - `app/` — application pages and components.
 - `app/Config.ts` — configuration including `tokenKey` used by the proxy.
 
+Environment variables / ตัวแปรสภาพแวดล้อม
+This project uses a small `Config` object in `app/Config.ts` to centralize a few settings. The file currently defines the following keys (defaults are shown in code):
+
+- `apiUrl` (string) — base path for API calls. Default: `'/api'`.
+- `apiKey` (string) — a shared API key used in some requests or services. Default: `'1234567890'`.
+- `tokenKey` (string) — the cookie key name used to store the auth token. Default: `'token_erp'`.
+
+If you prefer to load these values from environment variables, you can update `app/Config.ts` to read from `process.env` (server-side) or inject them at build time. Example (server-side safe pattern):
+
+```ts
+export const Config = {
+  apiUrl: process.env.NEXT_PUBLIC_API_URL || '/api',
+  apiKey: process.env.API_KEY || '1234567890',
+  tokenKey: process.env.NEXT_PUBLIC_TOKEN_KEY || 'token_erp',
+};
+```
+
+Recommended environment variables (example names):
+- `NEXT_PUBLIC_API_URL` — public base URL for client-side API calls (e.g. `https://api.example.com`).
+- `API_KEY` — secret API key (server-only).
+- `NEXT_PUBLIC_TOKEN_KEY` — cookie name used in the client for the auth token.
+
+Note on secrets: keep truly secret values (like `API_KEY`) out of client bundles — use server-only env vars (no `NEXT_PUBLIC_` prefix) and access them only from server-side code or API routes.
+
 Testing & validation / ทดสอบ
 - Build locally to verify production build:
   ```bash
