@@ -1,65 +1,90 @@
-# Project Documentation for NextJS-ERP
+# NextJS-ERP
+
+Frontend ERP application built with Next.js, React, and TypeScript.
+
+## Repository Scope
+This repository contains the **frontend only**.
+
+- Backend repository: https://github.com/PLLV99/Spring-Boot-ERP
 
 ## Tech Stack
-- **Frontend**: Next.js 16, React 19, TypeScript
-- **Backend**: Spring Boot
-- **Database**: PostgreSQL
+- Next.js
+- React
+- TypeScript
+- CSS / Tailwind config
+
+## Language Composition
+- TypeScript: 93.9%
+- CSS: 5.8%
+- JavaScript: 0.3%
+
+## Actual Project Structure
+
+```text
+app/
+├── erp/
+│   ├── accounting/page.tsx
+│   ├── bill-sale/page.tsx
+│   ├── components/
+│   │   └── Modal.tsx
+│   ├── dashboard/page.tsx
+│   ├── formula/[id]/page.tsx
+│   ├── inventory/page.tsx
+│   ├── material/page.tsx
+│   ├── production/
+│   │   ├── log/[id]/page.tsx
+│   │   ├── loss/[id]/page.tsx
+│   │   └── page.tsx
+│   ├── report/page.tsx
+│   ├── sale/page.tsx
+│   ├── user/
+│   │   ├── edit/page.tsx
+│   │   └── page.tsx
+│   ├── Sidebar.tsx
+│   └── layout.tsx
+├── interface/
+├── Config.ts
+├── favicon.ico
+├── globals.css
+├── layout.tsx
+└── page.tsx
+
+public/
+├── file.svg
+├── globe.svg
+├── next.svg
+├── vercel.svg
+└── window.svg
+
+Root files:
+.env.example, .gitignore, eslint.config.mjs, middleware.disabled.ts, next.config.ts,
+package.json, package-lock.json, postcss.config.mjs, proxy.ts, tailwind.config.ts,
+tsconfig.json, vercel.json
+```
 
 ## ERP Modules
-1. **Dashboard**: Centralized data visualization and key performance indicators.
-2. **Sales**: Manage sales orders, customers, and invoicing.
-3. **Inventory**: Track stock levels, orders, and deliveries.
-4. **Production**: Oversee manufacturing processes and production planning.
-5. **Accounting**: Manage financial transactions, journals, and reports.
-6. **Material**: Control raw materials and supply chain information.
-7. **Formula**: Define production formulas and recipes.
-8. **Reporting**: Generate various reports for insights and analysis.
+- Dashboard
+- Sale
+- Bill Sale
+- Inventory
+- Production (main / log / loss)
+- Material
+- Formula
+- Accounting
+- Report
+- User Management
 
-## Authentication Flow
-The application uses JSON Web Tokens (JWT) for authentication. Users are required to log in to obtain a token, which must be included in headers for subsequent requests.
+## Getting Started
 
-## Project Structure
+```bash
+git clone https://github.com/PLLV99/NextJS-ERP.git
+cd NextJS-ERP
+npm install
+npm run dev
 ```
-NextJS-ERP/
-├── frontend/  # Contains Next.js application
-├── backend/   # Contains Spring Boot application
-└── docs/      # Documentation files
-```
 
-## Setup Instructions
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/PLLV99/NextJS-ERP.git
-   ```
-2. Navigate to the `frontend` directory and install dependencies:
-   ```bash
-   cd frontend
-   npm install
-   ```
-3. Navigate to the `backend` directory and build the Java application:
-   ```bash
-   cd backend
-   ./mvnw install
-   ```
-4. Start both frontend and backend servers.
+Open: http://localhost:3000
 
-## API Integration Details
-- **Frontend** makes HTTP requests to the **Backend** API endpoints to perform CRUD operations on the database.
-- Example of fetching sales data:
-   ```javascript
-   fetch('/api/sales')
-       .then(response => response.json())
-       .then(data => console.log(data));
-   ```
-
-## Deployment Information
-To deploy the application, you need to:
-1. Build the production assets in the frontend:
-   ```bash
-   cd frontend
-   npm run build
-   ```
-2. Deploy the `backend` to a Java web server like Tomcat or to a cloud service.
-3. Ensure the PostgreSQL database is set up and running.
-
-For more detailed deployment instructions, refer to [DEPLOYMENT.md](./docs/DEPLOYMENT.md).
+## Notes
+- This repository is frontend-only.
+- Backend APIs are served by `PLLV99/Spring-Boot-ERP`.
