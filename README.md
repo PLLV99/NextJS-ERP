@@ -13,11 +13,6 @@ This repository contains the **frontend only**.
 - TypeScript
 - CSS / Tailwind config
 
-## Language Composition
-- TypeScript: 93.9%
-- CSS: 5.8%
-- JavaScript: 0.3%
-
 ## Actual Project Structure
 
 ```text
@@ -76,6 +71,9 @@ tsconfig.json, vercel.json
 
 ## Getting Started
 
+The frontend needs the backend API to log in, so start the backend first
+(see `PLLV99/Spring-Boot-ERP` — Docker database + `mvnw spring-boot:run` on port 8080).
+
 ```bash
 git clone https://github.com/PLLV99/NextJS-ERP.git
 cd NextJS-ERP
@@ -84,6 +82,10 @@ npm run dev
 ```
 
 Open: http://localhost:3000
+
+In development, `next.config.ts` forwards `/api/*` to `http://localhost:8080`
+(override with the `BACKEND_URL` env var). In production on Vercel, the rewrite
+in `vercel.json` routes `/api/*` to the deployed backend instead.
 
 ## Notes
 - This repository is frontend-only.

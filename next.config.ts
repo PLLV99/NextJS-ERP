@@ -15,6 +15,18 @@ const nextConfig: NextConfig = {
     // set the root to this project directory so Next infers the correct workspace
     root: path.resolve(__dirname),
   },
+  // In dev, forward /api/* to the local Spring Boot backend.
+  // In production this returns no rewrites; vercel.json handles routing on Vercel.
+  async rewrites() {
+    if (process.env.NODE_ENV !== "development") return [];
+    return [
+      {
+        source: "/api/:path*",
+        destination:
+          (process.env.BACKEND_URL ?? "http://localhost:8080") + "/api/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
